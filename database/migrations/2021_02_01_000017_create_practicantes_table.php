@@ -30,8 +30,8 @@ class CreatePracticantesTable extends Migration
             $table->string('telefono', 200)->nullable();
             $table->integer('cantidad_horas')->nullable();
             $table->integer('cantidad_meses')->nullable();
-            $table->boolean('equipo_computacional')->nullable();
-            $table->boolean('internet_fijo')->nullable();
+            $table->string('equipo_computacional')->nullable();
+            $table->string('internet_fijo')->nullable();
             
             $table->json('hab_blandas')->nullable();
             $table->json('hab_profesionals')->nullable();
