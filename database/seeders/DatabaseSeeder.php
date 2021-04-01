@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             EstadoUsuarioSeeder::class,
             NivelEducacionalSeeder::class,
             RegionSeeder::class,
-            RolSeeder::class,
+            RoleSeeder::class,
             TipoPracticaSeeder::class,
 
             //

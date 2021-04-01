@@ -143,4 +143,8 @@ class PostulacionController extends Controller
             'postulacions' => $postulacions
         ], 200);
     }
+    /*Datos de la postulacion del PRACTICANTE desde su DASHBOARD, Jair
+    public function postulacionPracticante(Request $request){
+        dd($request);
+    }*/
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Rol;
+use Spatie\Permission\Models\Role;
 use App\Models\Practicante;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -65,7 +67,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'estado_usuario_id' => ['required'],
-            'rol_id' => ['required']
+            //'rol_id' => ['required']
         ]);
 
         // Creación del usuario
@@ -77,13 +79,14 @@ class UserController extends Controller
         $user->email = $request['email'];
         $user->password = Hash::make($request['password']);
         $user->estado_usuario_id = $request['estado_usuario_id'];
-        $user->rol_id = $request['rol_id'];
+        //$user->rol_id = $request['rol_id'];
 
         $user->save();
 
         // Creación del perfil
-
-        if($user->rol_id == 1){
+        
+        $rol = new Rol();
+        if($rol->id == 1){
             $perfil = new Practicante();
     
             $perfil->id = $user->id;
@@ -94,7 +97,8 @@ class UserController extends Controller
             $perfil->user_id = $user->id;    
             $perfil->save();
         }
-        elseif($user->rol_id == 2 or $user->rol_id == 4){
+        
+        elseif($rol->id == 2 or $rol->id == 4){
             $perfil = new Empresa();
     
             $perfil->id = $user->id;
@@ -105,7 +109,7 @@ class UserController extends Controller
             $perfil->user_id = $user->id; 
             $perfil->save();
         }
-        elseif($user->rol_id == 3){
+        elseif($rol->id == 3){
             $perfil = new Institucion();
     
             $perfil->id = $user->id;
@@ -116,7 +120,7 @@ class UserController extends Controller
             $perfil->user_id = $user->id; 
             $perfil->save();
         }
-
+        
         return response()->json('Usuario creado', 200);
     }
 
@@ -157,7 +161,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' .$id],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'estado_usuario_id' => ['required'],
-            'rol_id' => ['required']
+            //'rol_id' => ['required']
         ]);
 
         $user = User::findOrFail($id);
@@ -205,7 +209,8 @@ class UserController extends Controller
         $users = User::orderBy('id', 'desc')->orderBy('name', 'asc')->get();
 
         $users->transform(function($user) {
-            $user->rol = $user->rol->nombre;
+            //Comentado por Jair.
+            //$user->roles = $user->roles->nombre;
             $user->estado_usuario = $user->estado_usuario->nombre;
 
             return $user;
@@ -253,7 +258,7 @@ class UserController extends Controller
             'porcentaje_bajas' => $porcentaje_bajas
         ], 200);
     }
-
+    //
     public function down($id)
     {
         $user = User::findOrFail($id);
@@ -268,14 +273,15 @@ class UserController extends Controller
     public function to_premium($id)
     {
         $user = User::findOrFail($id);
-
-        if($user->rol_id == 2){
-            $user->rol_id = 4;
+        
+        if($user->roles == 2){
+            $user->roles = 4;
     
             $user->save();
     
             return response()->json('Convertido a premium', 200);
         }
+        
     }
 
     ///////////////////////
@@ -283,7 +289,7 @@ class UserController extends Controller
     ///////////////////////   
     public function get_all_practicante()
     {
-        $users = User::where('rol_id', 1)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
+        $users = Role::where('id', 1)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
 
         $users->transform(function($user) {
             $user->estado_usuario = $user->estado_usuario->nombre;
@@ -300,15 +306,15 @@ class UserController extends Controller
     public function get_stats_practicante()
     {
         // Usuarios registrados total
-        $users = User::where('rol_id', 1)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
+        $users = Role::where('id', 1)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
         $total_users = $users->count();
 
         // Usuarios registrados hoy
-        $users_hoy = User::where('rol_id', 1)->whereDate('created_at', Carbon::today())->get();
+        $users_hoy = Role::where('id', 1)->whereDate('created_at', Carbon::today())->get();
         $total_users_hoy = $users_hoy->count();
 
         // Usuarios validados
-        $users_validados = User::where('rol_id', 1)->where('estado_usuario_id', 2)->get();
+        $users_validados = Role::where('id', 1)->where('estado_usuario_id', 2)->get();
         $total_users_validados = $users_validados->count();
         if($total_users < 1){
             $porcentaje_validados = 0;
@@ -318,7 +324,7 @@ class UserController extends Controller
         }
 
         // Usuarios dados de baja
-        $users_baja = User::where('rol_id', 1)->where('estado_usuario_id', 3)->get();
+        $users_baja = Role::where('id', 1)->where('estado_usuario_id', 3)->get();
         $total_users_baja = $users_baja->count();
         if($total_users < 1){
             $porcentaje_bajas = 0;
@@ -340,7 +346,7 @@ class UserController extends Controller
     ///////////////////   
     public function get_all_empresa()
     {
-        $users = User::whereIn('rol_id', [2, 4])->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
+        $users = Role::whereIn('id', [2, 4])->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
 
         $users->transform(function($user) {
             $user->rol = $user->rol->nombre;
@@ -357,15 +363,16 @@ class UserController extends Controller
     public function get_stats_empresa()
     {
         // Usuarios registrados total
-        $users = User::whereIn('rol_id', [2, 4])->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
+        $users = Role::whereIn('id', [2, 4])->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
         $total_users = $users->count();
+        //echo $total_users;
 
         // Usuarios registrados hoy
-        $users_hoy = User::whereIn('rol_id', [2, 4])->whereDate('created_at', Carbon::today())->get();
+        $users_hoy = Role::whereIn('id', [2, 4])->whereDate('created_at', Carbon::today())->get();
         $total_users_hoy = $users_hoy->count();
 
         // Usuarios validados
-        $users_validados = User::whereIn('rol_id', [2, 4])->where('estado_usuario_id', 2)->get();
+        /*$users_validados = Role::whereIn('id', [2, 4])->where('estado_usuario_id', 2)->get();
         $total_users_validados = $users_validados->count();
         if($total_users < 1){
             $porcentaje_validados = 0;
@@ -373,9 +380,9 @@ class UserController extends Controller
         else{
             $porcentaje_validados = round((($total_users_validados / $total_users) * 100), 1);
         }
-
+        */
         // Usuarios dados de baja
-        $users_baja = User::whereIn('rol_id', [2, 4])->where('estado_usuario_id', 3)->get();
+        /*$users_baja = Role::whereIn('id', [2, 4])->where('estado_usuario_id', 3)->get();
         $total_users_baja = $users_baja->count();
         if($total_users < 1){
             $porcentaje_bajas = 0;
@@ -383,12 +390,12 @@ class UserController extends Controller
         else{
             $porcentaje_bajas = round((($total_users_baja / $total_users) * 100), 1);
         }
-
+        */
         return response()->json([
             'total_users' => $total_users,
             'total_users_hoy' => $total_users_hoy,
-            'porcentaje_validados' => $porcentaje_validados,
-            'porcentaje_bajas' => $porcentaje_bajas
+            //'porcentaje_validados' => $porcentaje_validados,
+            //'porcentaje_bajas' => $porcentaje_bajas
         ], 200);
     }
 
@@ -397,7 +404,7 @@ class UserController extends Controller
     ///////////////////////
     public function get_all_institucion()
     {
-        $users = User::where('rol_id', 3)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
+        $users = Role::where('id', 3)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
 
         $users->transform(function($user) {
             $user->rol = $user->rol->nombre;
@@ -414,15 +421,15 @@ class UserController extends Controller
     public function get_stats_institucion()
     {
         // Usuarios registrados total
-        $users = User::where('rol_id', 3)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
+        $users = Role::where('id', 3)->orderBy('id', 'desc')->orderBy('name', 'asc')->get();
         $total_users = $users->count();
 
         // Usuarios registrados hoy
-        $users_hoy = User::where('rol_id', 3)->whereDate('created_at', Carbon::today())->get();
+        $users_hoy = Role::where('id', 3)->whereDate('created_at', Carbon::today())->get();
         $total_users_hoy = $users_hoy->count();
 
         // Usuarios validados
-        $users_validados = User::where('rol_id', 3)->where('estado_usuario_id', 2)->get();
+        $users_validados = Role::where('id', 3)->where('estado_usuario_id', 2)->get();
         $total_users_validados = $users_validados->count();
         if($total_users < 1){
             $porcentaje_validados = 0;
@@ -432,7 +439,7 @@ class UserController extends Controller
         }
 
         // Usuarios dados de baja
-        $users_baja = User::where('rol_id', 3)->where('estado_usuario_id', 3)->get();
+        $users_baja = Role::where('id', 3)->where('estado_usuario_id', 3)->get();
         $total_users_baja = $users_baja->count();
         if($total_users < 1){
             $porcentaje_bajas = 0;

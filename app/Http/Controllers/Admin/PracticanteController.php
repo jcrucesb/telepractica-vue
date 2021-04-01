@@ -25,8 +25,13 @@ class PracticanteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('admin/practicante/index');
+    {   
+        //Funcionando correctamente el filtro de USUARIOS.
+        if(auth()->user()->can('practicante.index')){
+            return view('practicantes.index');
+        }else if(auth()->user()->can('admin.home')){
+            return view('admin/practicante/index');
+        }
     }
 
     /**
@@ -242,7 +247,8 @@ class PracticanteController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             //'rol_id' => 1,
-        ]); 
+        ])->assignRole('Practicante');
+
         if ($user) {  
             $user->id; 
             $prac = Practicante::create([
@@ -288,5 +294,16 @@ class PracticanteController extends Controller
                 'msg' => 'estamos Full',
             ]);
         }
+    }
+    /*Datos del PRACTICANTE para mostrar y EDITAR desde su DASHBOARD, Jair*/
+    public function datPract(){
+        $id = auth()->id();
+        //echo $id;
+        $prac = DB::table('practicantes')
+        ->select('id', 'run', 'nombre_completo', 'email','telefono',
+                 'cantidad_horas', 'cantidad_meses')
+        ->where('user_id', '=', $id)
+        ->get();
+        return $prac;
     }
 }

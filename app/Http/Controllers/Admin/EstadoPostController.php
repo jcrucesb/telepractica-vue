@@ -92,4 +92,11 @@ class EstadoPostController extends Controller
             'estado_posts' => $estado_posts
         ], 200);
     }    
+    /*Obtenemos el listado de las ofertas*/
+    public function estadoOfert(){
+        $estado = DB::table('estado_ofertas')
+        ->select('id', 'nombre')
+        ->get();
+        echo $estado; 
+    }
 }

@@ -8,8 +8,8 @@
                         <registroprac-component ref="modalShow"></registroprac-component>
                     </div>
                     <!---->
-                    <!---->
-                    <a type="button" href="#" class="" data-toggle="modal" data-target="#PractRegis">
+                        <!---->
+                        <a type="button" href="#" class="" data-toggle="modal" data-target="#PractRegis">
                         <div class="card border-success mb-3"  v-for="prac in listarOferta" :key="prac.id" style="max-width: 18rem;">
                         <div class="card-header bg-transparent border-success mx-auto">{{prac.razon_social}}</div>
                         <div class="card-body text-success mx-auto">
@@ -132,7 +132,7 @@ export default {
     },
     methods: {
         obtenerOferta(){
-            axios.get("listarOfertas")
+            axios.get("/admin/api/oferta/listOfertas")
             .then(response => {
                 console.log(response);
                 console.log(this.listarOferta = response.data);

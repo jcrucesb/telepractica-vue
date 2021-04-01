@@ -71,6 +71,25 @@ Vue.component('registroprac-component', require('./components/RegistrarPractican
 
 /*Este es el registrar PRACTICANTES de la vista welcome, Jair*/
 Vue.component('formregistroprac-component', require('./components/practicantes/FormularioRegistroPracticante.vue').default);
+
+/*Este es el registrar OFERTAS de la vista empresas.index, Jair*/
+Vue.component('ofertaemp-component', require('./components/ofertaEmpresa/RegistrarOfertaEmpresa.vue').default);
+
+/*Este es el registrar OFERTAS de la vista empresas.index, Jair*/
+Vue.component('oferpractic-component', require('./components/practicantes/OfertaPracticante.vue').default);
+
+/*Este es el correo para confirmar la fecha de citación, Jair*/
+Vue.component('confirmacion-component', require('./components/practicantes/ConfirmaCitacion.vue').default);
+
+/*Este es el DATATABLES para listar los datos del PRACTICANTE desde su DASHBOARD, Jair*/
+Vue.component('datosper-component', require('./components/practicantes/DatosPersonales.vue').default);
+
+/*Este es el DATATABLES para listar los PRACTICANTE que aceptaron la ENTREVISTA, Jair*/
+Vue.component('aceptar-component', require('./components/empresas/PracticantesConfirmacionEntrevista.vue').default);
+
+/*Este es el DATATABLES para listar los PRACTICANTE que aceptaron la ENTREVISTA, Jair*/
+Vue.component('datosempresa-component', require('./components/empresas/DatosPersonalesEmpresa.vue').default);
+
 // MomentsJS
 var moment = require('moment');
 
@@ -130,4 +149,28 @@ const registrarPracticante = new Vue({
 /**Jair, Formulario Registro PRACTICANTES de la vista registroTelepracticante.*/
 const formRegistroPrac = new Vue({
   el: '#formRegistroPrac',
+});
+/**Jair, componente para registrar una OFERTA por la EMPRESA.*/
+const registrarOferta = new Vue({
+  el: '#registrarOfertaEmpresa',
+});
+/**Jair, componente para Mostrar las OFERTAS en el DASHBOARD del PRACTICANTE.*/
+const ofertaPrac = new Vue({
+  el: '#listOfertaPract',
+});
+/**Jair, componente para mostrar el botón de confirmación de la fecha de citación.*/
+const confirmacion = new Vue({
+  el: '#confirmacion',
+});
+/**Jair, componente para mostrar los datos del PRACTICANTE desde su DASHBOARD.*/
+const datosPersonales = new Vue({
+  el: '#datosPersonales',
+});
+/**Jair, PRACTICANTES que aceptaron entrevista.*/
+const aceptaron = new Vue({
+  el: '#aceptaron',
+});
+/**Jair, DATOS de la EMPRESA.*/
+const datosPersonalesEmpresa = new Vue({
+  el: '#datosPersonalesEmpresa',
 });

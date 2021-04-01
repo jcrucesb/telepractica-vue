@@ -8,9 +8,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+/*Este es el use para utilizar los roles de Laravel permission.*/
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
-{
+{   
+    /*Utilizar los roles dentro de esta clase.*/
+    use HasRoles;
     use HasFactory, Notifiable;
 
     /**
@@ -21,7 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'id',
         'estado_usuario_id',
-        'rol_id',
+        //'rol_id',
         'run',
         'email',
         'name',
@@ -51,8 +55,9 @@ class User extends Authenticatable
         return $this->belongsTo(EstadoUsuario::class);
     }
 
+    
     public function rol(){
         return $this->belongsTo(Rol::class);
     }
-
+    
 }

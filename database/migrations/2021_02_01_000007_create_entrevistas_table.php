@@ -20,7 +20,8 @@ class CreateEntrevistasTable extends Migration
            
             $table->integer('evaluacion')->nullable()->default(1);
             $table->boolean('seleccionado')->nullable();
-
+            $table->date('fecha_citacion')->nullable();
+            $table->time('hora_citacion')->nullable();
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ class Oferta extends Model
         'nombre_oferta',
         'descripcion',
         'remunerada',
+        'valor_remuneracion',
         'fecha_inicio',
         'fecha_termino',
         'requisitos_min',

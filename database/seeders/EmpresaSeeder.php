@@ -16,8 +16,9 @@ class EmpresaSeeder extends Seeder
      */
     public function run()
     {
+        
         Empresa::truncate();
-
+        /*Probaremos
         for ($i=1; $i<=20; $i++)
         {
             $user = new User();
@@ -55,5 +56,27 @@ class EmpresaSeeder extends Seeder
 
             $empresa->save();
         }
+        */
+        $emp = User::create([
+            'name' => 'empresa',
+            'email' => 'empresa@gmail.com',
+            'password' => Hash::make('1234567'),
+            'estado_usuario_id' => 2,
+            'run' => '11111111-1',
+        ])->assignRole('Empresa');
+
+        Empresa::create([
+            'user_id' => $emp->id,
+            'area_id' => 1,
+            'nombre_ficticio' => 'Eme Bus',
+            'run' => '11111111-1',
+            'email' => 'empresa@gmail.com',
+            'razon_social' => 'Giro-EMP',
+            'giro' => 'eme bus',
+            'web' => 'www.emebus.cl',
+            'telefono' => '+56 9 0000 0000',
+            'direccion' => 'Talca',
+            'fecha_inicio_actividades' => '01/01/2021',
+        ]);
     }
 }

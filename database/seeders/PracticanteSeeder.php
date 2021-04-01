@@ -17,7 +17,7 @@ class PracticanteSeeder extends Seeder
     public function run()
     {
         Practicante::truncate();
-
+        /*
         for ($i=1; $i<=100; $i++)
         {
             $user = new User();
@@ -27,7 +27,7 @@ class PracticanteSeeder extends Seeder
             $user->email = "practicante$i@email.com";
             $user->password = Hash::make("practicante$i");
             $user->estado_usuario_id = random_int(1, 3);
-            $user->rol_id = 1;
+            //$user->rol_id = 1;
 
             $user->save();
 
@@ -40,7 +40,7 @@ class PracticanteSeeder extends Seeder
 
             $practicante->carrera_id = random_int(1, 150); 
             $practicante->comuna_id = random_int(1, 150);
-            $practicante->institucion_id = random_int(21, 30); 
+            $practicante->institucion_id = random_int(27, 29); 
             $practicante->nivel_educacional_id = random_int(1, 3); 
             $practicante->region_id = random_int(1, 16); 
             $practicante->tipo_practica_id = random_int(1, 5);
@@ -56,5 +56,33 @@ class PracticanteSeeder extends Seeder
 
             $practicante->save();
         }
+        */
+        $user = User::create([
+            'name' => 'kaido',
+            'email' => 'kaido@gmail.com',
+            'password' => Hash::make('12345678'),
+            'estado_usuario_id' => 2,
+            'run' => '2333344-2',
+        ])->assignRole('Practicante');
+
+        Practicante::create([
+            'user_id' => $user->id,
+            'carrera_id' => 1,
+            'comuna_id' => 2,
+            'institucion_id' => 2,
+            'nivel_educacional_id' => 2,
+            'region_id' => 2,
+            'tipo_practica_id' => 2,
+            'run' => '333333333-3',
+            'nombre_completo' => 'Kaido-Sama',
+            'email' => 'kaido@gmail.com',
+            'telefono' => '898989898',
+            'cantidad_horas' => 200,
+            'cantidad_meses' => 3,
+            'equipo_computacional' => 'si',
+            'internet_fijo' => 'si',
+            'hab_blandas' => null,
+            'hab_profesionals' => null,
+        ]);
     }
 }

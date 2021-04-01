@@ -93,35 +93,76 @@
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-    
+                                
                             <ul class="nav nav-treeview" style="display: block;">
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('user.index') }}" class="nav-link">
                                         <i class="fas fa-users fa-sm"></i>
                                         <p>Cuentas</p>
                                     </a>
                                 </li>
-    
+                                @endif
+                                <!--Solo se mostrará esta opción al ADMINISTRADOR.-->
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('practicante.index') }}" class="nav-link">
                                         <i class="fas fa-user-graduate fa-sm"></i>
                                         <p>Practicantes</p>
                                     </a>
                                 </li>
-    
+                                @endif
+                                <!---->
+                                <!--Solo se mostrará esta opción al ADMINISTRADOR.-->
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('empresa.index') }}" class="nav-link">
                                         <i class="fas fa-user-tie fa-sm"></i>
                                         <p>Empresas</p>
                                     </a>
                                 </li>
-    
+                                @endif
+                                <!--EMPRESAS.-->
+                                @if (auth()->user()->can('empresas.index'))
+                                <li class="nav-item">
+                                    <a href="{{ route('empresa.index') }}" class="nav-link">
+                                        <i class="fas fa-user-tie fa-sm"></i>
+                                        <p>Empresas</p>
+                                    </a>
+                                </li>
+                                @endif
+                                <!---->
+                                <!--EMPRESAS, mostrar todos los practicantes que aceptaron la citación
+                                    de la entrevista.-->
+                                @if (auth()->user()->can('empresas.index'))
+                                <li class="nav-item">
+                                    <a href="{{ route('confirmacionEntrevistaPracticantes') }}" class="nav-link">
+                                        <i class="fas fa-user-tie fa-sm"></i>
+                                        <p>Aceptaron Entrevista</p>
+                                    </a>
+                                </li>
+                                @endif
+                                <!---->
+                                <!--EMPRESAS, mostrar todos los practicantes que aceptaron la citación
+                                    de la entrevista.-->
+                                    @if (auth()->user()->can('empresas.index'))
+                                    <li class="nav-item">
+                                        <a href="{{ route('datosEmpresa') }}" class="nav-link">
+                                            <i class="fas fa-user-tie fa-sm"></i>
+                                            <p>Datos Empresa</p>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    <!---->
+                                <!---->
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('institucion.index') }}" class="nav-link">
                                         <i class="fas fa-university fa-sm"></i>
                                         <p>Instituciones</p>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
 
@@ -135,33 +176,59 @@
                             </a>
     
                             <ul class="nav nav-treeview" style="display: block;">
+                                <!---->
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('carrera.index') }}" class="nav-link">
                                         <i class="fas fa-graduation-cap"></i>
                                         <p>Carreras</p>
                                     </a>
                                 </li>
-    
+                                @endif
+                                <!---->
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('comuna.index') }}" class="nav-link">
                                         <i class="fas fa-map-marker-alt"></i>
                                         <p>Comunas</p>
                                     </a>
                                 </li>
-    
+                                @endif
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('oferta.index') }}" class="nav-link">
                                         <i class="fas fa-briefcase"></i>
                                         <p>Ofertas</p>
                                     </a>
                                 </li>
-    
+                                @endif
+                                @if (auth()->user()->can('practicante.index'))
+                                <li class="nav-item">
+                                    <a href="{{ route('practicante.index') }}" class="nav-link">
+                                        <i class="fas fa-briefcase"></i>
+                                        <p>Ofertas</p>
+                                    </a>
+                                </li>
+                                @endif
+                <!--Esta ruta es para mostrar los datos del PRACTICANTE y los pueda
+                                EDITAR a gusto, Jair.-->
+                                @if (auth()->user()->can('practicante.index'))
+                                <li class="nav-item">
+                                    <a href="{{ route('datosPersonales') }}" class="nav-link">
+                                        <i class="fas fa-briefcase"></i>
+                                        <p>Datos Personales</p>
+                                    </a>
+                                </li>
+                                @endif
+                                <!---->
+                                @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
                                     <a href="{{ route('postulacion.index') }}" class="nav-link">
                                         <i class="fas fa-tasks"></i>
                                         <p>Postulaciones</p>
                                     </a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                         

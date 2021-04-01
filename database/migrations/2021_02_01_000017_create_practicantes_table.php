@@ -39,7 +39,6 @@ class CreatePracticantesTable extends Migration
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

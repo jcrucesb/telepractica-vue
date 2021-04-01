@@ -1,4 +1,4 @@
-<template>
+<template v-if="$can('empresas.index')">
   <div class="mt-3 mb-3 ml-3 mr-3">
     <div class="card">
       <div class="card-body">

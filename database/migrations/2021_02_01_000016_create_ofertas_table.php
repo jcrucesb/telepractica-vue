@@ -22,9 +22,10 @@ class CreateOfertasTable extends Migration
             
             $table->string('nombre_oferta', 200)->nullable();
             $table->string('descripcion', 200)->nullable();
-            $table->boolean('remunerada')->nullable();
-            $table->string('fecha_inicio', 200)->nullable();
-            $table->string('fecha_termino', 200)->nullable();
+            $table->string('remunerada')->nullable();
+            $table->integer('valor_remuneracion')->nullable();
+            $table->date('fecha_inicio', 200)->nullable();
+            $table->date('fecha_termino', 200)->nullable();
             $table->string('requisitos_min', 200)->nullable();
             $table->integer('cupos_totales')->nullable();
             $table->integer('postulaciones_recibidas')->nullable();

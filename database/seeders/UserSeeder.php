@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        /*
         for ($i=1; $i<=10; $i++)
         {
             $user = new User();
@@ -24,9 +25,19 @@ class UserSeeder extends Seeder
             $user->email = "superusuario$i@email.com";
             $user->password = Hash::make("superusuario$i");
             $user->estado_usuario_id = random_int(1, 3);
-            $user->rol_id = 5;
+            //$user->rol_id = 5;
 
             $user->save();
         }
+        */
+        User::create([
+            'name' => 'Mauricio',
+            'email' => 'mauricio@gmail.com',
+            'password' => Hash::make('12345678'),
+            'estado_usuario_id' => 2,
+            'run' => '22222222-2',
+        ])->assignRole('Superusuario');
+        //
+        //User::factory(1)->create();
     }
 }

@@ -15,9 +15,10 @@ class Entrevista extends Model
         'postulacion_id',
         'comuna_id',
         'evaluacion',
-        'seleccionado'
+        'seleccionado',
+        'fecha_citacion',
+        'hora_citacion'
     ];
-
     // BelongsTo
     public function postulacion(){
         return $this->belongsTo(Postulacion::class);

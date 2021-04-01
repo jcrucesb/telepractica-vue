@@ -1,6 +1,6 @@
 <template>
     <div id="formRegistroPrac">
-        <form action="" enctype="multipart/form-data">
+        <form action="" enctype="multipart/form-data" onsubmit="comprobarChecks(event);">
                 <div class="container">
                     <h1>Inscripción Telepracticantes</h1>
                     <div class="row">
@@ -60,7 +60,7 @@
                 </div> 
                     
                     <div class="row">
-                        <div class="col">
+                        <div class="col habilidadBlanda">
                             <label for="">Habilidades Blandas (escoger 3)</label>
                             <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="form-check-input hab_blandas" v-model="form.habilidades_blandas" name="habilidades_blandas[]" id="habilidades_blandas" value="comunicacion">
@@ -354,6 +354,7 @@ export default {
         this.obtenerInstitucion();
         this.educacional();
         this.tipoPractica();
+        this.habilidadBlandas();
     },
     methods: {
         //Funcionando correctamente.
@@ -406,10 +407,35 @@ export default {
                 let errorObject=JSON.parse(JSON.stringify(error));
             })
         },
+        habilidadBlandas(){
+                $('.hab_blandas').on('change', function(){
+                    var checkbox = document.getElementsByName('habilidades_blandas[]');
+                    var contador = 0;
+                    var max = 3;
+                    for(var i=0; i< checkbox.length; i++) {
+                        if(checkbox[i].checked){
+                            contador++;
+                            if(contador == max){
+                                if($(this).is(':checked')){
+                                    $(".hab_blandas").prop("disabled", true);
+                                }else{
+                                    $(".hab_blandas").prop("disabled", false);
+                                }
+                            }
+                        }     
+                    }
+                    //Con JQuery contador=$('[name="groupCheckbox[]"]:checked').length
+                    if(contador ==0){
+                        console.log("Obligatorio un check!");
+                        event.preventDefault();
+                    } 
+                });
+        },
         //Funcionando correctamente por Jair.
         //Me faltan las validaciones.
         registrarPracticante(){
-            this.form
+            debugger;
+            /*this.form
             .post("formPrac")
             .then(() => {
             Fire.$emit("loadEmpresas");
@@ -420,6 +446,7 @@ export default {
             .catch(() => {
             this.$toastr.e("No se pudo actualizar el registro", "Error");
             });
+            */
         },
     },
 }
