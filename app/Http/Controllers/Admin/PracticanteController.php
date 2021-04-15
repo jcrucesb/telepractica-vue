@@ -278,14 +278,15 @@ class PracticanteController extends Controller
                     'run' => $request->rut,
                 ]);
             }
-                $mailDetails = [
+                $details = [
                     //Titulo del Email
                     'email' => $request->email,
+                    'name' => $request->usuario,
                     'verificacion' => 'Citación'
                 ];
                 //var_dump($mailDetails['email']);
                 //Email a enviar.
-                Mail::to($request->email)->send(new PracticanteRegistroEmail($request->email));
+                Mail::to($request->email)->send(new PracticanteRegistroEmail($details));
                 
                 return response()->json([
                     'status' => '1',

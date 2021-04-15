@@ -270,20 +270,20 @@ class EmpresaController extends Controller
                 'direccion' => $request->direccion,
             ]);
             /*Enviar correo de Bienvenida a las Empresas.*/
-            $mailDetails = [
+            $details = [
                 //Titulo del Email
                 'email' => $request->email,
+                'razon_social' => $request->razon_social,
                 'verificacion' => 'Bienvenida Empresa'
             ];
-            //var_dump($mailDetails['email']);
             //Email a enviar.
-            Mail::to($request->email)->send(new CorreoBienvenidaEmpresa($request->nombre_ficticio));
+            Mail::to($request->email)->send(new CorreoBienvenidaEmpresa($details));
                 return response()->json([
                     'status' => '2'
                 ]);
             }
         }
-        
+
     }
     //
     public function registrarOfer(Request $request){
@@ -417,16 +417,6 @@ class EmpresaController extends Controller
     EMPRESA*/
     public function enviarPostulacionPracticante(Request $request){
         //dd($request);
-        $mailDetails = [
-            //Titulo del Email
-            'email' => $request->email_practicante,
-            'verificacion' => 'Citación'
-        ];
-        //var_dump($mailDetails['email']);
-        //Email a enviar.
-        Mail::to($request->email_practicante)->send(new CorreoEntrevista($request->email_practicante));
-        
-        /* */
         $id_post = DB::table('postulacions')
                    ->select('id', 'oferta_id', 'practicante_id', 'nombre')
                    ->where('practicante_id', '=', $request->id_practicante)
@@ -440,13 +430,32 @@ class EmpresaController extends Controller
                     'fecha_citacion' => $request->fechaCitacion,
                     'hora_citacion' => $request->horaCitacion,
                 ]);
-                //Veamos si funciona.
-                $id_entrevista = EstadoEntrevista::create([
-                    'entrevista_id' => $id_entrevista->id,
-                ]);
+            
+                /**Enviar EMAIL con fecha y Hora de citación.*/
+                    $dat = DB::table('ofertas')
+                    ->join('empresas', 'ofertas.empresa_id', '=', 'empresas.id')
+                    ->select('empresas.nombre_ficticio')
+                    ->get();
+                    echo $dat;
+                    foreach ($dat as $key) {
+                        $details = [
+                            //Titulo del Email
+                            'email' => $request->email_practicante,
+                            'fecha_citacion' => $request->fechaCitacion,
+                            'hora_citacion' => $request->horaCitacion,
+                            'nombrePracticante' => $request->nombrePracticante,
+                            'nombreOferta' => $request->nombreOferta,
+                            'nombreEmpresa' => $key->nombre_ficticio,
+                        ];
+                        //Email a enviar.
+                    Mail::to($request->email_practicante)->send(new CorreoEntrevista($details));
+                    }
+                    //Veamos si funciona.
+                    $id_entrevista = EstadoEntrevista::create([
+                        'entrevista_id' => $id_entrevista->id,
+                    ]);
             }
         }
-        
     }
     /*Método para recibir la CONFIRMACIÓN del PRACTICANTE a su fecha de citación.*/
     public function confirmacionPracticante(Request $request){

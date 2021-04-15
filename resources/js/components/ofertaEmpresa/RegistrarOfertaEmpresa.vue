@@ -578,10 +578,13 @@ export default {
                 var nombreOferta;
                 var fechaCitacion;
                 var horaCitacion;
+                var nombrePracticante;
                 //Nos dirigimos al tr para Obtener los datos.
                 fila = $(this).closest("tr");
                 //Capturamos el primer elemento, que sería el ID_Producto.
-                id_practicante = parseInt(fila.find('td:eq(0)').text()); 
+                id_practicante = parseInt(fila.find('td:eq(0)').text());
+
+                nombrePracticante = fila.find('td:eq(1)').text();
                 //console.log(id_practicante);
                 //Ahora capturamos la 3era posición que es el email del practicante.
                 email_practicante = fila.find('td:eq(3)').text();
@@ -597,6 +600,7 @@ export default {
                 //Eviaremos los valores por Axios.
                 let val = {
                     'id_practicante': id_practicante,
+                    'nombrePracticante': nombrePracticante,
                     'email_practicante': email_practicante,
                     'nombreOferta': nombreOferta,
                     'fechaCitacion': fechaCitacion,

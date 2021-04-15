@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 
 class PracticanteRegistroEmail extends Mailable
 {
-    public $subject = 'Información';
+    public $details;
     use Queueable, SerializesModels;
 
     /**
@@ -17,9 +17,10 @@ class PracticanteRegistroEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($details)
     {
         //
+        $this->details = $details;
     }
 
     /**

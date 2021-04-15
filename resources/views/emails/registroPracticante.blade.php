@@ -12,6 +12,7 @@
 </head>
 <body>
     <h1>Bienvenido a la gran Comunidad de Creatiox</h1>
+    <h2>Te damos la Bienvenida: {{ $details['name'] }}</h2>
     <h3>Termina de llenar tu formulario de registro y elige la oferta más conveniente para ti</h3>
     <h5>Ingresa al link</h5>
     <h2></h2>
