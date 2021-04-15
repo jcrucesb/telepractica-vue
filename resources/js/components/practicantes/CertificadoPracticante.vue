@@ -218,7 +218,9 @@ export default {
                         icon: "success",
                     });
                     $('#tablaCertificado').DataTable().destroy();
-                    //this.tablaOferta();
+                    
+                    this.obtenerCertificados();
+                    
                     $('#edit').modal('hide');
                 }
             });
@@ -251,8 +253,8 @@ export default {
                     });
                     //$('#tablaDatosPersonales').DataTable().destroy();
                     //this.tablaOferta();
-                    $('#tablaCertificado').DataTable().draw();               
-                    this.listarOfertas();
+                    $('#tablaCertificado').DataTable().destroy();               
+                    console.log(this.obtenerCertificados());
                     $('#edit').modal('hide');
                 }
             });
@@ -280,8 +282,8 @@ export default {
                             icon: "success",
                             button: "OK",
                         });
-                        $('#tablaCertificado').DataTable().destry();               
-                        this.listarOfertas(); 
+                        $('#tablaCertificado').DataTable().destroy();               
+                        this.obtenerCertificados();
                         $('#edit').modal('hide');   
                     }).catch(error=>{
                             let errorObject=JSON.parse(JSON.stringify(error));
