@@ -29,7 +29,7 @@
         <!---->
             <!-- Modal -->
             <div class="modal fade" id="PractRegis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title mx-auto">Registrarse</h5>
@@ -42,7 +42,7 @@
                                     <div class="col">
                                         <label>Carrera</label>
                                         <select name="" id="" v-model="form.carrera">
-                                            <option v-for="opcion in listarCarrera" :value="opcion.id" :key="opcion.id">
+                                            <option id="selectPrac" v-for="opcion in listarCarrera" :value="opcion.id" :key="opcion.id">
                                             {{ opcion.nombre }}
                                         </option>
                                         </select>
@@ -54,7 +54,7 @@
                                             v-model="form.usuario"
                                             type="text"
                                             name="usuario"
-                                            id="usuario"
+                                            id="usuarioPrac"
                                             placeholder="USUARIO"
                                             class="form-control"
                                         />
@@ -67,7 +67,7 @@
                                                 v-model="form.email"
                                                 type="email"
                                                 name="email"
-                                                id="email"
+                                                id="emailPrac"
                                                 placeholder="EMAIL"
                                                 class="form-control"
                                             />
@@ -80,11 +80,24 @@
                                             v-model="form.password"
                                             type="password"
                                             name="password"
-                                            id="password"
+                                            id="passwordPrac"
                                             placeholder="password"
                                             class="form-control"
                                         />
                                     </div>
+                                    </div>
+                                     <div class="container mx-auto">
+                                        <div class="form-group">
+                                            <label>R.U.T</label>
+                                            <input
+                                                v-model="form.rut"
+                                                type="text"
+                                                name="rut"
+                                                id="rut"
+                                                placeholder="R.U.T"
+                                                class="form-control"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +105,7 @@
                     </form>
                 </div>
                 <div class="modal-footer mx-auto">
-                    <button type="button" class="btn btn-success" @click.prevent="regisPracticante();">Registrarse</button>
+                    <button type="submit" class="btn btn-success" @click="regisPracticante();">Registrarse</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
                 </div>
@@ -123,6 +136,7 @@ export default {
                 usuario:null,
                 email: null,
                 password: null,
+                rut:null,
             }),
         };
     },
@@ -153,19 +167,29 @@ export default {
         regisPracticante(){
             this.form
             .post("registPrac")
-            .then(() => {
-                Swal.fire({
-                    title: "Revisa tu correo y termina de registrarte",
-                    icon: "success",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Aceptar",
-                });
-            this.$toastr.s("Practicante Registrada Correctamente", "Registro");
-            $("#PractRegis").modal("hide");
-            $('#usuario').val('');
-            $('#email').val('');
-            $('#password').val('');
+            .then((resp) => {
+                if (resp.data.status == '2') {
+                    Swal.fire({
+                        title: "El Correo electrónico ya se encuentra registrado",
+                        text: 'Postula a esta Oferta desde tu dashboard',
+                        icon: "warning",
+                    });
+                }else if(resp.data.status == '1'){
+                    Swal.fire({
+                        title: "Revisa tu correo y termina de registrarte",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Aceptar",
+                    });
+                }
+                $('#selectPrac').val(null);
+                $('#usuarioPrac').val(null);
+                $('#emailPrac').val(null);
+                $('#passwordPrac').val(null);
+                $("#PractRegis").modal("hide");
+                this.$toastr.s("Practicante Registrado Correctamente", "Registro");
+            
             })
             .catch(() => {
             this.$toastr.e("No se pudo guardar el registro", "Error");

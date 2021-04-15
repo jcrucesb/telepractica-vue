@@ -168,14 +168,25 @@ class OfertaController extends Controller
     /*Obtener todas las OFERTAS para listarlas desde el DATATABLE del
     DASHBOARD, de empresa cuando se crea una oferta.*/
     public function listarOfertas(){
-        $empresas = DB::table('ofertas')
-                ->select('id', 'nombre_oferta', 'descripcion', 'remunerada',
-                         'valor_remuneracion', 'cupos_totales', 'fecha_inicio', 'fecha_termino',
-                         'requisitos_min','created_at')
-                ->get();
-            echo $empresas;
-    }
+        $emp = auth()->id();
+        //echo $emp;
+        /**Obtener la empresa que hizo la oferta.*/
+        $oferta =  DB::table('empresas')
+            ->select('user_id', 'id')
+            ->where('user_id', '=', $emp)
+            ->get();
 
+            foreach ($oferta as $key) {
+                $empresas = DB::table('ofertas')
+                    ->select('id', 'nombre_oferta', 'descripcion', 'remunerada',
+                                'valor_remuneracion', 'cupos_totales', 'fecha_inicio', 'fecha_termino',
+                                'requisitos_min','created_at')
+                    ->where('empresa_id', '=' , $key->id)
+                    ->get();
+                return $empresas;
+            }
+        
+    }
     /**Método paRA ELIMINAR una OFERTA.*/
     public function eliminar_oferta(Oferta $idOferta){
         $idOferta->delete();

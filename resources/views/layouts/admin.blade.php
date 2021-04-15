@@ -220,6 +220,25 @@
                                     </a>
                                 </li>
                                 @endif
+                                <!--Curriculum.-->
+                                @if (auth()->user()->can('practicante.index'))
+                                <li class="nav-item">
+                                    <a href="{{ route('curriculumPract') }}" class="nav-link">
+                                        <i class="fas fa-briefcase"></i>
+                                        <p>Tu curriculum</p>
+                                    </a>
+                                </li>
+                                @endif
+                                <!---->
+                                <!--Links para los certificados del Practicante.-->
+                                @if (auth()->user()->can('practicante.index'))
+                                <li class="nav-item">
+                                    <a href="{{ route('certificadoPracticante') }}" class="nav-link">
+                                        <i class="fas fa-briefcase"></i>
+                                        <p>Certificados de Cursos</p>
+                                    </a>
+                                </li>
+                                @endif
                                 <!---->
                                 @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">

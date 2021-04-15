@@ -47,7 +47,7 @@ export default {
                         title: "Fecha confirmada con Éxito!",
                         icon: "success",
                     });
-                    window.location.href = 'http://telepractica-vue.test:8080/' +'/login';
+                    window.location.href = 'http://telepractica-vue.test:8080' +'/login';
                 }else if(resp.data.msg == '1'){
                     Swal.fire({
                         title: "Error en el R.U.N!",    

@@ -39,9 +39,9 @@ class Practicante extends Model
         'equipo_computacional',
         'cantidad_horas',
         'cantidad_meses',
-
         'hab_blandas',
-        'hab_profesionals'
+        'hab_profesionals',
+        'experiencia',
     ];
 
     // BelongsTo

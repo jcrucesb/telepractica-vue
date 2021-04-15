@@ -103,6 +103,10 @@
                                 </option>
                             </select>
                             <!---->
+                            <div class="alert alert-warning" role="alert">
+                                Si su Oferta NO cuenta con remuneración, debe completar el campo de abajo, llamado
+                                'Valor Remuneración', solo con 0.
+                            </div>
                         </div>
                         <div id="valorRem" v-show="show">
                             <div class="form-group">
@@ -113,7 +117,7 @@
                         <div class="form-group">
                             <label for="">Fecha Inicio</label>
                             <br>
-                            <input type="date" v-model="editarOferta.fecha_inicio" name="fecha_inicio" id="fecha_inicio">
+                            <input type="date" v-model="editarOferta.fecha_inicio" name="fecha_inicio" @click="fechaInicioOferta();" id="fecha_inicio">
                         </div>
                         <div class="form-group">
                             <label for="">Fecha Término</label>
@@ -170,7 +174,7 @@
                 <td class="text-white text-center">{{prac.cantidad_meses}}</td>
                 <td class="text-white text-center">{{prac.nombre_oferta}}</td>
                 <td class="text-white text-center">
-                    <input type="date" name="fechaCitacion" id="fechaCitacion">
+                    <input type="date" name="fechaCitacion" id="fechaCitacion" @click="fecha();">
                 </td>
                 <td class="text-white text-center">
                     <input type="time" name="horaCitacion" id="horaCitacion">
@@ -318,6 +322,18 @@ export default {
                 });
             });
         },
+        fechaInicioOferta(){
+            /*Funcionando correctamente, las fechas anteriores a la fecha actual, 
+            aparecen deshabilitadas.*/
+            let fecha_inicio = document.getElementById("fecha_inicio");
+            fecha_inicio.min = new Date().toISOString().split("T")[0];
+        },
+        fechaTerminoOferta(){
+            /*Funcionando correctamente, las fechas anteriores a la fecha actual, 
+            aparecen deshabilitadas.*/
+            let fecha_termino = document.getElementById("fecha_termino");
+            fecha_termino.min = new Date().toISOString().split("T")[0];
+        },
         //
         getUser(){
             /**Enviar por axios.*/
@@ -329,6 +345,12 @@ export default {
             .catch(error=>{
                 let errorObject=JSON.parse(JSON.stringify(error));
             })
+        },
+        fecha(){
+            /*Funcionando correctamente, las fechas anteriores a la fecha actual, 
+            aparecen deshabilitadas.*/
+            let fechaCitacion = document.getElementById("fechaCitacion");
+            fechaCitacion.min = new Date().toISOString().split("T")[0];
         },
         //Método para la descarga de archivo del CV del Practicante.
         cv(y){
@@ -402,7 +424,12 @@ export default {
             });   
         },
         crear(){
-            let gu = {
+            let fechaInic = this.editarOferta.fecha_inicio;
+            
+            let fechaTermino = this.editarOferta.fecha_termino;
+            
+            if (fechaTermino >= fechaInic) {
+                let gu = {
                 'carrera': this.editarOferta.carrera,
                 'nombre_oferta': this.editarOferta.nombre_oferta,
                 'descripcion': this.editarOferta.descripcion,
@@ -412,49 +439,78 @@ export default {
                 'fecha_termino': this.editarOferta.fecha_termino,
                 'cupos_totales': this.editarOferta.cupos_totales,
                 'requisitos': this.editarOferta.requisitos,
-            }
-            /**Enviar por axios.*/
-            axios.post("/admin/empresa/registrarOfer",gu)
-            .then(res => {           
-                /*Todo funcionando correctamente.*/
-                if (res.data.status= 'Muy bien!') {
-                    /*SweetAlert2.*/
-                    Swal.fire({
-                    title: 'Oferta Registrada!',
-                    text: 'Tu Oferta fue registrada correctamente',
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                    });
-                    /*Fin al SweetAlert2.*/    
-                    this.$toastr.s("Oferta registrada correctamente", "Registro");
-                    $('#tablaOferta').DataTable().destroy();               
-                    this.listarOfertas();
-                    $('#insertarOferta').modal('hide');
-                    $("registroOfertas").trigger('reset');
-                }else{
-                    Swal.fire({
-                        title: "Error!",
-                        text: "La Oferta ya existe",
-                        icon: "error",
-                        button: "OK",
-                    });
                 }
-            })              
-            .catch(error=>{
+                /**Enviar por axios.*/
+                axios.post("/admin/empresa/registrarOfer",gu)
+                .then(res => {           
+                    /*Todo funcionando correctamente.*/
+                    if (res.data.status == 'Muy bien!') {
+                        /*SweetAlert2.*/
+                        Swal.fire({
+                        title: 'Oferta Registrada!',
+                        text: 'Tu Oferta fue registrada correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                        });
+                        /*Fin al SweetAlert2.*/    
+                        this.$toastr.s("Oferta registrada correctamente", "Registro");
+                        $('#tablaOferta').DataTable().destroy();               
+                        this.listarOfertas();
+                        $('#insertarOferta').modal('hide');
+                        $("registroOfertas").trigger('reset');
+                    }else if(res.data.status == '2'){
+                        Swal.fire({
+                            title: "Error!",
+                            text: "La fecha de inicio de la oferta, no pueder ser menor a la fecha actual",
+                            icon: "error",
+                            button: "OK",
+                        });
+                    }else if(res.data.status == '1'){
+                        Swal.fire({
+                            title: "Error!",
+                            text: "La oferta ya se encuentra disponible.",
+                            icon: "error",
+                            button: "OK",
+                        });
+                    }else if(res.data.status == '3'){
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Debe seleccionar una carrera.",
+                            icon: "error",
+                            button: "OK",
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            title: "Error!",
+                            text: "La Oferta ya existe",
+                            icon: "error",
+                            button: "OK",
+                        });
+                    }
+                })              
+                .catch(error=>{
+                    Swal.fire({
+                        title: "Precaución!",
+                        text: "Error al Crear la Oferta, faltan campos por completar!",
+                        icon: "warning",
+                        button: "OK",
+                        });
+                    let errorObject=JSON.parse(JSON.stringify(error));
+                })
+            }else{
                 Swal.fire({
-                    title: "Error!",
-                    text: "Error al Crear la Oferta!",
-                    icon: "error",
-                    button: "OK",
-                    });
-                let errorObject=JSON.parse(JSON.stringify(error));
-            })
+                    title: 'Error!',
+                    text: 'La fecha de Término no puede ser inferior a la fecha de Inicio de la Oferta',
+                    icon: 'warning',
+                });
+            }
         },
         //
         abrirModalEditar(agregar){
             this.editarOferta = {carrera: agregar.carrera, id: agregar.id, nombre_oferta: agregar.nombre_oferta,descripcion: agregar.descripcion,
                                 remunerada: agregar.remunerada,valor_remuneracion: agregar.valor_remuneracion,
-                                cupos_totales: agregar.cupos, requisitos: agregar.requisitos_min ,fecha_inicio:agregar.fecha_inicio, fecha_termino: agregar.fecha_termino};
+                                cupos_totales: agregar.cupos_totales, requisitos: agregar.requisitos_min ,fecha_inicio:agregar.fecha_inicio, fecha_termino: agregar.fecha_termino};
             this.titulo = 'Editar Oferta';
             this.btnCrear = false;
             this.btnEditar=true;
@@ -537,7 +593,6 @@ export default {
                 fechaCitacion = fila.find('input[type="date"]').val();
                 //
                 horaCitacion = fila.find('input[type="time"]').val();
-                
 
                 //Eviaremos los valores por Axios.
                 let val = {

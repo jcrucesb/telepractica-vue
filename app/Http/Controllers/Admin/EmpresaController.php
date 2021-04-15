@@ -11,6 +11,7 @@ use App\Models\EstadoEntrevista;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CorreoEntrevista;
+use App\Mail\CorreoBienvenidaEmpresa;
 use Illuminate\Support\Facades\DB;
 use App\Models\Oferta;
 use App\Models\User;
@@ -214,96 +215,157 @@ class EmpresaController extends Controller
     }
     /*Registrar las EMPRESAS desde la vista WELCOME por Jair.*/
     public function regitEmpresa(Request $request){
-        //dd($request);
-        //Validaciones.
-        $this->validate($request, [
-            /**Están funcionando los required.*/
-            'run' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'razon_social' => ['required', 'string', 'max:255'],
-            'nombre_ficticio' => ['required', 'string', 'max:255'],
-            'giro' => ['required'],
-            'descripcion' => ['required', 'string', 'max:255'],
-            'web' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'int'],
-            'usuario' => ['required', 'max:255'],
-            'direccion' => ['required', 'string', 'max:255'],
-            'password' => ['required','max:255'],
-        ]);
-        $user = User::create([
-            /*Funcionando correctamente.*/
-            'name' => $request->usuario,
-            'run' => $request->run,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ])->assignRole([$empresa]);
+        //dd($request->empty());
+        if (empty($request->run || $request->email || $request->razon_social || $request->nombre_ficticio
+            || $request->giro || $request->descripcion || $request->usuario || $request->web || $request->telefono
+            || $request->direccion || $request->password)) 
+            {
+                return response()->json([
+                    'status' => '3'
+                ]);
+        }else{
+            $emailEmp = DB::table('users')
+                        ->select('email', 'run')
+                        ->where('email', '=', $request->email)
+                        ->orWhere('run', '=', $request->run)
+                        ->get();
+        if(count($emailEmp) > 0){
+            return response()->json([
+                'status' => '1'
+            ]);
+        }else{
+            $this->validate($request, [
+                /**Están funcionando los required.*/
+                'run' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'razon_social' => ['required', 'string', 'max:255'],
+                'nombre_ficticio' => ['required', 'string', 'max:255'],
+                'giro' => ['required'],
+                'descripcion' => ['required', 'string', 'max:255'],
+                'web' => ['required', 'string', 'max:255'],
+                'telefono' => ['required', 'int'],
+                'usuario' => ['required', 'max:255'],
+                'direccion' => ['required', 'string', 'max:255'],
+                'password' => ['required','max:255'],
+            ]);
+            $user = User::create([
+                /*Funcionando correctamente.*/
+                'name' => $request->usuario,
+                'run' => $request->run,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ])->assignRole(['Empresa']);
 
-        $emp = Empresa::create([
-            /*Funcionando correctamente.*/
-            'user_id' => $user->id,
-            'run' => $request->run,
-            'email' => $request->email,
-            'razon_social' => $request->razon_social,
-            'nombre_ficticio' => $request->nombre_ficticio,
-            'giro' => $request->giro,
-            'descripcion' => $request->descripcion,
-            'web' => $request->web,
-            'telefono' => $request->telefono,
-            'direccion' => $request->direccion,
-        ]);
+            $emp = Empresa::create([
+                /*Funcionando correctamente.*/
+                'user_id' => $user->id,
+                'run' => $request->run,
+                'email' => $request->email,
+                'razon_social' => $request->razon_social,
+                'nombre_ficticio' => $request->nombre_ficticio,
+                'giro' => $request->giro,
+                'descripcion' => $request->descripcion,
+                'web' => $request->web,
+                'telefono' => $request->telefono,
+                'direccion' => $request->direccion,
+            ]);
+            /*Enviar correo de Bienvenida a las Empresas.*/
+            $mailDetails = [
+                //Titulo del Email
+                'email' => $request->email,
+                'verificacion' => 'Bienvenida Empresa'
+            ];
+            //var_dump($mailDetails['email']);
+            //Email a enviar.
+            Mail::to($request->email)->send(new CorreoBienvenidaEmpresa($request->nombre_ficticio));
+                return response()->json([
+                    'status' => '2'
+                ]);
+            }
+        }
+        
     }
     //
     public function registrarOfer(Request $request){
-        //dd();
-        $emp = DB::table('ofertas')
-        ->select('nombre_oferta')
-        ->where('nombre_oferta', '=', $request->nombre_oferta)
-        ->get();
-        //Con esto obtenemos el resultado del id de la session que viene siendo la EMPRESA.
-        $empresa_email = auth()->user()->email; 
-        //echo $id_empresa;
-        $id_empresa = DB::table('empresas')
-        ->select('id')
-        ->where('email', '=', $empresa_email)
-        ->get();
-        //echo $id_empresa;
-        foreach($id_empresa as $ingreso)
-        {
-            $ingreso->id;
-            //Este está funcionando.
-            if(count($emp) < 1 && count($id_empresa) > 0){
-                //Este está funcionando.
-                $id_oferta = Oferta::create([
-                    'empresa_id' => $ingreso->id,
-                    'nombre_oferta' => $request->nombre_oferta,
-                    'descripcion' => $request->descripcion,
-                    'remunerada' => $request->remunerada,
-                    'valor_remuneracion' => $request->valor_remuneracion,
-                    'cupos_totales' => $request->cupos,
-                    'carrera' => $request->carrera,
-                    'fecha_inicio' => $request->fecha_inicio,
-                    'fecha_termino' => $request->fecha_termino,
-                    'requisitos_min' => $request->requisitos,
-                ]);
-                    
-                $id_carrera = DB::table('carreras')
-                            ->select('id', 'nombre')
-                            ->where('nombre', '=', $request->carrera)
-                            ->get();
-                //echo $id_carrera;
-                foreach ($id_carrera as $key) {
-                    OfertaCarrera::create([
-                        'carrera_id' => $key->id,
-                        'oferta_id' => $id_oferta->id,    
-                    ]);
+        //dd($request->carrera);
+        /*Validaciones de los campos.*/
+        $vali = $this->validate($request, [
+            'nombre_oferta' => ['required', 'string', 'max:255'],
+            'descripcion' => ['required', 'string','max:255'],
+            'remunerada' => ['required', 'string', 'max:255'],
+            'valor_remuneracion' => ['required', 'integer'],
+            'fecha_inicio' => ['required'],
+            'fecha_termino' => ['required'],
+            'requisitos' => ['required', 'string', 'max:255'],
+            'cupos_totales' => ['required', 'integer'],
+        ]);
+        if ($request->carrera == null) {
+            return response()->json([
+                'status' => '3']);
+        }else{
+            date_default_timezone_set('America/Santiago');
+            $date = date('Y-m-d');
+            //print_r($date);
+            if ($request->fecha_inicio >= $date) {
+                $emp = DB::table('ofertas')
+                ->select('nombre_oferta')
+                ->where('nombre_oferta', '=', $request->nombre_oferta)
+                ->get();
+                //Con esto obtenemos el resultado del id de la session que viene siendo la EMPRESA.
+                $empresa_email = auth()->user()->email; 
+                //echo $id_empresa;
+                $id_empresa = DB::table('empresas')
+                ->select('id')
+                ->where('email', '=', $empresa_email)
+                ->get();
+                //echo $id_empresa;
+                foreach($id_empresa as $ingreso)
+                {
+                    $ingreso->id;
+                    //Este está funcionando.
+                    if(count($emp) < 1 && count($id_empresa) > 0){
+                        //Este está funcionando.
+                        $id_oferta = Oferta::create([
+                            'empresa_id' => $ingreso->id,
+                            'estado_oferta_id' => 1,
+                            'nombre_oferta' => $request->nombre_oferta,
+                            'descripcion' => $request->descripcion,
+                            'remunerada' => $request->remunerada,
+                            'valor_remuneracion' => $request->valor_remuneracion,
+                            'cupos_totales' => $request->cupos_totales,
+                            'carrera' => $request->carrera,
+                            'fecha_inicio' => $request->fecha_inicio,
+                            'fecha_termino' => $request->fecha_termino,
+                            'requisitos_min' => $request->requisitos,
+                        ]);
+                        $id_carrera = DB::table('carreras')
+                                    ->select('id', 'nombre')
+                                    ->where('nombre', '=', $request->carrera)
+                                    ->get();
+                        //echo $id_carrera;
+                        foreach ($id_carrera as $key) {
+                            OfertaCarrera::create([
+                                'carrera_id' => $key->id,
+                                'oferta_id' => $id_oferta->id,    
+                            ]);
+                        }
+                        
+                        /**Con esto, obtenemos el id de la oferta insertada correctamente.*/
+                        //dd($id_oferta->id);
+                        return response()->json([
+                            'status' => 'Muy bien!',
+                            'msg' => 'Datos actualizados correctamente.',
+                        ],201);
+                    }else{
+                        return response()->json([
+                            'status' => '1']);
+                    }
                 }
-                
+            }else{
                 /**Con esto, obtenemos el id de la oferta insertada correctamente.*/
                 //dd($id_oferta->id);
                 return response()->json([
-                    'status' => 'Muy bien!',
-                    'msg' => 'Datos actualizados correctamente.',
-                ],201);
+                    'status' => '2']);
             }
         }
     }
@@ -389,6 +451,7 @@ class EmpresaController extends Controller
     /*Método para recibir la CONFIRMACIÓN del PRACTICANTE a su fecha de citación.*/
     public function confirmacionPracticante(Request $request){
         //dd($request);
+        
         $id_prac = DB::table('practicantes')
                     ->join('postulacions', 'practicantes.id', '=', 'postulacions.practicante_id')
                     ->join('entrevistas', 'postulacions.id', '=', 'entrevistas.postulacion_id')
@@ -396,7 +459,7 @@ class EmpresaController extends Controller
                     ->where('practicantes.run', '=', $request->run)
                     ->get();
                 if (count($id_prac) > 0) {
-                    foreach ($id_prac as $key) {
+                    foreach($id_prac as $key){
                         $prac = DB::table('estado_entrevistas')
                                ->where('entrevista_id','=', $key->entrevista_id)  // find your user by their email
                                ->update(array(
@@ -414,6 +477,8 @@ class EmpresaController extends Controller
     }
     /*Método para obtener a los PRACTICANTES que confirmaron la fecha de entrevista.*/
     public function practicantesConfirmaron(){
+        $id = auth()->id();
+        //echo $id;
         $run_prac = DB::table('estado_entrevistas')
                     ->select('rut_confirmacion')
                     ->get();
@@ -422,10 +487,11 @@ class EmpresaController extends Controller
             $prac = DB::table('estado_entrevistas')
                 ->join('entrevistas','estado_entrevistas.entrevista_id', '=', 'entrevistas.id')
                 ->join('postulacions','entrevistas.postulacion_id', '=', 'postulacions.id')
+                ->join('ofertas','postulacions.oferta_id', '=', 'ofertas.id')
                 ->join('practicantes','postulacions.practicante_id', '=', 'practicantes.id')
-                ->select('practicantes.id','practicantes.run', 'practicantes.nombre_completo', 'postulacions.nombre',
-                         'practicantes.email')
-                //->where('estado_entrevistas.rut_confirmacion', '=',$key->rut_confirmacion)
+                ->select('practicantes.id','practicantes.run', 'practicantes.nombre_completo', 
+                         'postulacions.nombre','practicantes.email')
+                ->where('ofertas.empresa_id', '=',$id)
                 ->get();
             return $prac;
             //echo $prac;
@@ -468,6 +534,7 @@ class EmpresaController extends Controller
     }
     /*Obtener los datos de la EMPRESA para listarlos desde su DASHBOARD, Jair.*/
     public function datEmp(){
+        
         $empresa = auth()->id();
         //echo $empresa;
         $dat = DB::table('empresas')

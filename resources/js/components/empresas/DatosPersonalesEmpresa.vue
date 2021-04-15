@@ -170,9 +170,9 @@ export default {
                     icon: "success",
                     button: "OK",
                 });
+                $('#tablaDatosEmpresa').DataTable().destroy();
+                this.obtenerEmp();
                 $('#edit').modal('hide');
-                $('#tablaOferta').DataTable().destroy();
-                this.listarOfertas();
             }).catch(error=>{
                 let errorObject=JSON.parse(JSON.stringify(error));
             })

@@ -35,7 +35,7 @@ class CreatePracticantesTable extends Migration
             
             $table->json('hab_blandas')->nullable();
             $table->json('hab_profesionals')->nullable();
-
+            $table->text('experiencia')->nullable();
             $table->timestamps();
         });
     }

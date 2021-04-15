@@ -12,6 +12,9 @@
                 <th scope="col" class="text-center">Teléfono</th>
                 <th scope="col" class="text-center">Cant. Horas</th>
                 <th scope="col" class="text-center">Cant. Meses</th>
+                <th scope="col" class="text-center">Habilidades Blandas</th>
+                <th scope="col" class="text-center">Habilidades Profesionales</th>
+                <th scope="col" class="text-center">Editar Registro Completo</th>
                 <th scope="col" class="text-center" data-priority="1">Acción</th>
             </tr>
         </thead>
@@ -24,6 +27,9 @@
                 <td class="text-white text-center">{{prac.telefono}}</td>
                 <td class="text-white text-center">{{prac.cantidad_horas}}</td>
                 <td class="text-white text-center">{{prac.cantidad_meses}}</td>
+                <td class="text-white text-center">{{prac.hab_blandas}}</td>
+                <td class="text-white text-center">{{prac.hab_profesionals}}</td>
+                <td class="text-white text-center"><a :href="'http://telepractica-vue.test:8080/registroPracticanteDashboard/'">Formulario Editar</a></td>
                 <td class="text-dark text-center">
                     <button  type="button" @click.prevent="editar(prac);" data-toggle="modal" data-target="#edit" class="btn btn-warning btnEditar">Editar</button>
                 </td>
@@ -122,6 +128,9 @@ export default {
                         { width: "15%" },
                         { width: "15%" },
                         { width: "15%" },
+                        { width: "15%" },
+                        { width: "15%" },
+                        { width: "15%" },
                     ],  
                 });
             });
@@ -150,7 +159,7 @@ export default {
                         icon: "success",
                     });
                     $('#tablaDatosPersonales').DataTable().destroy();
-                    this.tablaOferta();
+                    this.obtenerPract();
                     $('#edit').modal('hide');
                 }
             });

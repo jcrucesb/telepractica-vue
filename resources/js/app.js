@@ -90,6 +90,15 @@ Vue.component('aceptar-component', require('./components/empresas/PracticantesCo
 /*Este es el DATATABLES para listar los PRACTICANTE que aceptaron la ENTREVISTA, Jair*/
 Vue.component('datosempresa-component', require('./components/empresas/DatosPersonalesEmpresa.vue').default);
 
+/*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
+Vue.component('certificadopracticante-component', require('./components/practicantes/CertificadoPracticante.vue').default);
+
+/*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
+Vue.component('curriculumpracticante-component', require('./components/practicantes/CurriculumPracticante.vue').default);
+
+/*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
+Vue.component('editarregistropracticante-component', require('./components/practicantes/EditarRegistroPracticante.vue').default);
+
 // MomentsJS
 var moment = require('moment');
 
@@ -173,4 +182,19 @@ const aceptaron = new Vue({
 /**Jair, DATOS de la EMPRESA.*/
 const datosPersonalesEmpresa = new Vue({
   el: '#datosPersonalesEmpresa',
+});
+
+/**Jair, Certificado Practicante.*/
+const certificadoPracticante = new Vue({
+  el: '#certificadoPracticante',
+});
+
+/**Jair, Certificado Practicante.*/
+const curriculumPracticante = new Vue({
+  el: '#curriculumPracticante',
+});
+
+/**Jair, Certificado Practicante.*/
+const editarRegistroPracticante = new Vue({
+  el: '#editarRegistroPracticante',
 });

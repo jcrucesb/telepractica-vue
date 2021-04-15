@@ -14,6 +14,7 @@
                         <div class="form-group">
                             <label for="rut">Rut</label>
                             <input type="text" v-model="form.rut" class="form-control-sm" style="display: block" name="rut" id="rut">
+                            <small class="text-danger">Por su seguridad, verificaremos su R.U.T</small>
                         </div>
 
                     </div>
@@ -23,7 +24,7 @@
                         <div class="form-group">
                             <label for="nombre_completo">Email</label>
                             <input type="email" v-model="form.email" class="form-control-sm" style="display: block" name="email" id="email">
-                            <small class="text-success">Por su seguridad,verificaremos su email</small>
+                            <small class="text-danger">Por su seguridad, verificaremos su email</small>
 
                             </div>
                         </div>
@@ -99,43 +100,43 @@
                     <div class="col">
                         <label for="">Habilidades Profesionales (escoger 3)</label>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="proactividad">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="proactividad">
                         <label class="form-check-label" for="habilidades_profesionales">Proactividad</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="trabajoEquipo">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="trabajoEquipo">
                         <label class="form-check-label" for="habilidades_profesionales">Trabajo en Equipo</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="adaptacionCambio">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="adaptacionCambio">
                         <label class="form-check-label" for="habilidades_profesionales">Adaptación al Cambio</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="trabajoBajoPresion">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="trabajoBajoPresion">
                         <label class="form-check-label" for="habilidades_profesionales">Trabajo Bajo Presión</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="estableceMetasConcretas">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="estableceMetasConcretas">
                         <label class="form-check-label" for="habilidades_profesionales">Establece Metas Concretas</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="responsabilidad">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="responsabilidad">
                         <label class="form-check-label" for="habilidades_profesionales">Responsabilidad</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="productividad">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="productividad">
                         <label class="form-check-label" for="habilidades_profesionales">Productividad</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="eficacia">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="eficacia">
                         <label class="form-check-label" for="habilidades_profesionales">Eficacia</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="resolucionConflictos">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="resolucionConflictos">
                         <label class="form-check-label" for="habilidades_profesionales">Resolución de Conflictos</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="otra">
+                        <input type="checkbox" class="form-check-input hab_prof" v-model="form.habilidades_profesionales" name="habilidades_profesionales[]" id="habilidades_profesionales" value="otra">
                         <label class="form-check-label" for="habilidades_profesionales">Otra</label>
                         </div>
                     </div>
@@ -291,7 +292,7 @@
                         <div class="col">
                         <div class="form-group">
                             <label for="archivoCurso">Adjuntar archivos de Cursos (Opcional)</label>
-                            <input type="file" class="form-control-file" id="archivoCurso" name="archivoCurso">
+                            <input type="file" accept='image/' @change="obtenerImagen" class="form-control-file" id="archivoCurso" name="archivoCurso">
                         </div>
                         </div>
                     </div>
@@ -321,17 +322,14 @@ export default {
         region:[],
         educacion:[],
         practica:[],
-        form: new Form({
-            id:null,
-            nombre_completo:null,
-            rut: null,
-            email: null,
-            telefono:null,
-            region: null,
-            comuna: null,
-            habilidades_blandas:[],
-            habilidades_profesionales:[],
-            institucion:null,
+        id:null,
+        nombre_completo:null,
+        rut: null,
+        email: null,
+        telefono:null,
+        region: null,
+        comuna: null,
+        institucion:null,
             mencion:null,
             educacion:null,
             practica:null,
@@ -344,7 +342,15 @@ export default {
             duracionCurso:null,
             horasCurso:null,
             certificacion:null,
+            imagen:'',
+            imagensita:null,
+            tipoImagen: null,
             experiencia: null,
+            img:null,
+            habilidad:null,
+        form: new Form({
+            habilidades_blandas:[],
+            habilidades_profesionales:[],
         }),
     };
   },
@@ -355,6 +361,7 @@ export default {
         this.educacional();
         this.tipoPractica();
         this.habilidadBlandas();
+        this.habilidadesProf();
     },
     methods: {
         //Funcionando correctamente.
@@ -408,45 +415,113 @@ export default {
             })
         },
         habilidadBlandas(){
-                $('.hab_blandas').on('change', function(){
-                    var checkbox = document.getElementsByName('habilidades_blandas[]');
+            $('.hab_blandas').on('change', function(){
+                var checkbox = document.getElementsByName('habilidades_blandas[]');
+                var contador = 0;
+                var max = 3;
+                for(var i=0; i< checkbox.length; i++) {
+                    if(checkbox[i].checked){
+                        contador++;
+                        console.log('mas');
+                        if(contador > max){
+                                Swal.fire({
+                                title: "Solo pueden ser 3 habilidades!",
+                                icon: "warning",
+                            });
+                            event.preventDefault();
+                        }
+                    }     
+                }
+            });
+        },
+        habilidadesProf(){
+            $('.hab_prof').on('change', function(){
+                    var checkbox = document.getElementsByName('habilidades_profesionales[]');
                     var contador = 0;
                     var max = 3;
                     for(var i=0; i< checkbox.length; i++) {
                         if(checkbox[i].checked){
                             contador++;
-                            if(contador == max){
-                                if($(this).is(':checked')){
-                                    $(".hab_blandas").prop("disabled", true);
-                                }else{
-                                    $(".hab_blandas").prop("disabled", false);
-                                }
+                            console.log('mas');
+                            if(contador > max){
+                                 Swal.fire({
+                                    title: "Solo pueden ser 3 habilidades!",
+                                    icon: "warning",
+                                });
+                                event.preventDefault();
                             }
                         }     
                     }
-                    //Con JQuery contador=$('[name="groupCheckbox[]"]:checked').length
-                    if(contador ==0){
-                        console.log("Obligatorio un check!");
-                        event.preventDefault();
-                    } 
                 });
+        },
+        obtenerImagen(event){
+            let selectedFile = event.target.files[0];
+            this.form.img = selectedFile;
         },
         //Funcionando correctamente por Jair.
         //Me faltan las validaciones.
         registrarPracticante(){
-            debugger;
-            /*this.form
-            .post("formPrac")
-            .then(() => {
-            Fire.$emit("loadEmpresas");
-            this.$toastr.s("Actualizado el Registro Correctamente", "Registro");
-            //Redireccionamos al Login.
-            window.location.href = 'http://telepractica-vue.test:8080' +'/login';
+            var formDa = new FormData();
+            formDa.append('cantidadHora',this.form.cantidadHora);
+            formDa.append('cantidadMeses',this.form.cantidadMeses);
+            formDa.append('certificacion',this.form.certificacion);
+            formDa.append('comuna',this.form.comuna);
+            formDa.append('duracionCurso',this.form.duracionCurso);
+            formDa.append('educacion',this.form.educacion);
+            formDa.append('email',this.form.email);
+            formDa.append('equipoComputacional',this.form.equipoComputacional);
+            formDa.append('experiencia',this.form.experiencia);
+            formDa.append('hab',this.form.habilidades_blandas);
+            formDa.append('hab_profs',this.form.habilidades_profesionales);
+            formDa.append('horasCurso',this.form.horasCurso);
+            formDa.append('img',this.form.img);
+            formDa.append('institucion',this.form.institucion);
+            formDa.append('internetFijo',this.form.internetFijo);
+            formDa.append('mencion',this.form.mencion);
+            formDa.append('nombreCurso',this.form.nombreCurso);
+            formDa.append('nombre_completo',this.form.nombre_completo);
+            formDa.append('practica',this.form.practica);
+            formDa.append('profesionalCargo',this.form.profesionalCargo);
+            formDa.append('region',this.form.region);
+            formDa.append('rut',this.form.rut);
+            formDa.append('telefono',this.form.telefono);
+            
+            /*Es necesaria para los files.*/
+            axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+            axios.post('/formPrac', formDa,{
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
             })
-            .catch(() => {
-            this.$toastr.e("No se pudo actualizar el registro", "Error");
+            .then(response => {
+                console.log(response);
+                 if (response.data.status == '1') {
+                    Swal.fire({
+                        title:'Éxito al registrarte!',
+                        text: "Recuerda, estos campos pueden ser editados desde tu DASHBOARD",
+                        icon: "success",
+                    });
+                    location.href = "http://telepractica-vue.test:8080/login";
+                 }else if (response.data.status == '2') {
+                    Swal.fire({
+                        title:'El email o el rut son incorrectos',
+                        text: "Verifica tu email",
+                        icon: "warning",
+                    });
+                 }else if (response.data.status == '3') {
+                    Swal.fire({
+                        title: "Deben ser 3 habilidades",
+                        icon: "warning",
+                    });
+                 }
+            })
+            .catch(e => {
+                 Swal.fire({
+                        title: "No pueden quedar campos vacíos",
+                        icon: "warning",
+                    });
+                //this.$toastr.e("No se pudo bajar usuario", "Error");
             });
-            */
         },
     },
 }
