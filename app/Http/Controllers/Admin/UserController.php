@@ -182,10 +182,10 @@ class UserController extends Controller
         //
     }
  
-    public function get_profile()
+    /*public function get_profile()
     {
         return view('admin/profile/profile');
-    }
+    }*/
  
     public function post_profile(Request $request)
     {

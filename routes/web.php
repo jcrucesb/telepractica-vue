@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     ///////////
     // ADMIN: Routes
     Route::get('/admin-home', [App\Http\Controllers\AdminHomeController::class, 'index'])->name('admin.home');
-    Route::get('/admin/profile', [App\Http\Controllers\Admin\UserController::class, 'get_profile'])->name('user.profile');
+    //Route::get('/admin/profile', [App\Http\Controllers\Admin\UserController::class, 'get_profile'])->name('user.profile');
     Route::post('/admin/profile', [App\Http\Controllers\Admin\UserController::class, 'post_profile'])->name('user.post-profile');
 
     //////////
@@ -62,31 +62,31 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/practicante/create', [App\Http\Controllers\Admin\PracticanteController::class, 'store']);
     Route::put('/admin/practicante/update/{id}', [App\Http\Controllers\Admin\PracticanteController::class, 'update']);
     /*Ruta pata listar las OFERTAS con PRACTICANTES desde el dashboard EMPRESA, Jair.*/
-    Route::get('/api/practicante/listarPracticantes', [App\Http\Controllers\Admin\EmpresaController::class, 'listarPracticantes']);
+    //Route::get('/api/practicante/listarPracticantes', [App\Http\Controllers\Admin\EmpresaController::class, 'listarPracticantes']);
     /*Ruta pata listartodos los CEETIFICADOS de los PRACTICANTES desde el dashboard Practicante, Jair.*/
-    Route::get('/api/practicante/certificadosPracticantes', [App\Http\Controllers\Admin\PracticanteController::class, 'certificadosPracticantes']);
+    //Route::get('/api/practicante/certificadosPracticantes', [App\Http\Controllers\Admin\PracticanteController::class, 'certificadosPracticantes']);
     /*Ruta para listar el CURRICULUM de los PRACTICANTES desde el dashboard Practicante, Jair.*/
-    Route::get('/api/practicante/curriculumPracticantes', [App\Http\Controllers\Admin\PracticanteController::class, 'curriculumPracticantes']);
+    //Route::get('/api/practicante/curriculumPracticantes', [App\Http\Controllers\Admin\PracticanteController::class, 'curriculumPracticantes']);
     
     //Ruta para editar el CURRICULUM del PRACTICANTE desde el DASHBOARD, Jair.
-    Route::post('/admin/practicante/editarCurriculum', [App\Http\Controllers\Admin\PracticanteController::class, 'editarCurriculum']);
+    //Route::post('/admin/practicante/editarCurriculum', [App\Http\Controllers\Admin\PracticanteController::class, 'editarCurriculum']);
 
 
     //Ruta para ELIMINAR el curso con el CERTIFICADO del PRACTICANTE desde el DASHBOARD, Jair.
-    Route::delete('/admin/practicante/eliminar_curriculum/{id}', [App\Http\Controllers\Admin\PracticanteController::class, 'eliminar_curriculum']);
+    //Route::delete('/admin/practicante/eliminar_curriculum/{id}', [App\Http\Controllers\Admin\PracticanteController::class, 'eliminar_curriculum']);
     
     /*Ruta para listar el CURRICULUM de los PRACTICANTES desde el dashboard Practicante, Jair.*/
-    Route::post('/admin/practicante/crearCurriculum', [App\Http\Controllers\Admin\PracticanteController::class, 'crearCurriculum']);
+    //Route::post('/admin/practicante/crearCurriculum', [App\Http\Controllers\Admin\PracticanteController::class, 'crearCurriculum']);
     //Ruta para editar los campos del CERTIFICADO del PRACTICANTE desde el DASHBOARD, Jair.
-    Route::post('/admin/practicante/editarCertificado', [App\Http\Controllers\Admin\PracticanteController::class, 'editarCertificado']);
+    //Route::post('/admin/practicante/editarCertificado', [App\Http\Controllers\Admin\PracticanteController::class, 'editarCertificado']);
     //Ruta para crear el curso con el CERTIFICADO del PRACTICANTE desde el DASHBOARD, Jair.
-    Route::post('/admin/practicante/crearCurso', [App\Http\Controllers\Admin\PracticanteController::class, 'crearCurso']);
+    //Route::post('/admin/practicante/crearCurso', [App\Http\Controllers\Admin\PracticanteController::class, 'crearCurso']);
     //Ruta para ELIMINAR el curso con el CERTIFICADO del PRACTICANTE desde el DASHBOARD, Jair.
-    Route::delete('/admin/practicante/eliminar_curso/{id}', [App\Http\Controllers\Admin\PracticanteController::class, 'eliminar_curso']);
+    //Route::delete('/admin/practicante/eliminar_curso/{id}', [App\Http\Controllers\Admin\PracticanteController::class, 'eliminar_curso']);
     //Esta ruta es para obtener los datos del PRACTICANTE y pueda EDITARLOS desde su DASHBOARD, por Jair.
-    Route::get('/admin/api/practicante/datPract', [App\Http\Controllers\Admin\PracticanteController::class, 'datPract']);
+    //Route::get('/admin/api/practicante/datPract', [App\Http\Controllers\Admin\PracticanteController::class, 'datPract']);
     //Esta ruta es para EDITAR desde el FORM de registro sin archivos los datos PRACTICANTES desde el DASHBOARD, por Jair.
-    Route::post('/admin/api/practicante/editarFormPrac', [App\Http\Controllers\Admin\PracticanteController::class, 'editarFormPrac']);
+    //Route::post('/admin/api/practicante/editarFormPrac', [App\Http\Controllers\Admin\PracticanteController::class, 'editarFormPrac']);
     /////////////
     // EMPRESA //
     /////////////
@@ -98,27 +98,27 @@ Route::group(['middleware' => 'auth'], function () {
     // EMPRESA: Vue Axios Routes
     Route::post('/admin/empresa/create', [App\Http\Controllers\Admin\EmpresaController::class, 'store']);
     /*Esta ruta es para registrar las OFERTAS por parte de las EMPRESAS, Jair.*/
-    Route::post('/admin/empresa/registrarOfer', [App\Http\Controllers\Admin\EmpresaController::class, 'registrarOfer']);
+    //Route::post('/admin/empresa/registrarOfer', [App\Http\Controllers\Admin\EmpresaController::class, 'registrarOfer']);
 
     //Ruta para editar una Oferta.
-    Route::put('/admin/empresa/editar_oferta/{idOferta}', [App\Http\Controllers\Admin\EmpresaController::class, 'editar_oferta']);
+    //Route::put('/admin/empresa/editar_oferta/{idOferta}', [App\Http\Controllers\Admin\EmpresaController::class, 'editar_oferta']);
 
     Route::put('/admin/empresa/update/{id}', [App\Http\Controllers\Admin\EmpresaController::class, 'update']);
 
     /*Enviar citación desde el DASHBOARD a PRACTICANTE por parte de la EMPRESA.*/
-    Route::post('/admin/empresa/enviarPostulacionPracticante', [App\Http\Controllers\Admin\EmpresaController::class, 'enviarPostulacionPracticante']);
+    //Route::post('/admin/empresa/enviarPostulacionPracticante', [App\Http\Controllers\Admin\EmpresaController::class, 'enviarPostulacionPracticante']);
 
     /*Enviar citación desde el DASHBOARD a PRACTICANTE por parte de la EMPRESA.*/
-    Route::get('/practicantesConfirmaron', [App\Http\Controllers\Admin\EmpresaController::class, 'practicantesConfirmaron']);
+    //Route::get('/practicantesConfirmaron', [App\Http\Controllers\Admin\EmpresaController::class, 'practicantesConfirmaron']);
     
     /*EDITAR datos desde el DASHBOARD del PRACTICANTE.*/
-    Route::put('/admin/empresa/editarDatosPrac/{id}', [App\Http\Controllers\Admin\EmpresaController::class, 'editarDatosPrac']);
+    //Route::put('/admin/empresa/editarDatosPrac/{id}', [App\Http\Controllers\Admin\EmpresaController::class, 'editarDatosPrac']);
 
     //Esta ruta es para obtener los datos de la EMPRESA y pueda EDITARLOS desde su DASHBOARD, por Jair.
-    Route::get('/empresa/datEmp', [App\Http\Controllers\Admin\EmpresaController::class, 'datEmp']);
+    //Route::get('/empresa/datEmp', [App\Http\Controllers\Admin\EmpresaController::class, 'datEmp']);
 
     /*EDITAR datos desde el DASHBOARD de la EMPRESA.*/
-    Route::put('/admin/empresa/editarDatosEmp/{id}', [App\Http\Controllers\Admin\EmpresaController::class, 'editarDatosEmp']);
+    //Route::put('/admin/empresa/editarDatosEmp/{id}', [App\Http\Controllers\Admin\EmpresaController::class, 'editarDatosEmp']);
 
 
     /////////////////
@@ -149,7 +149,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/api/carrera/get-all-by-institucion/{id}', [App\Http\Controllers\Admin\CarreraController::class, 'get_all_by_institucion']);
     
     /*Listar las carreras en el Formulario de Registro Oferta, Jair*/
-    Route::get('/admin/api/carrera/listCarreras', [App\Http\Controllers\Admin\CarreraController::class, 'listCarreras']);
+    //Route::get('/admin/api/carrera/listCarreras', [App\Http\Controllers\Admin\CarreraController::class, 'listCarreras']);
 
     ////////////
     // COMUNA //
@@ -188,10 +188,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/api/oferta/get-all', [App\Http\Controllers\Admin\OfertaController::class, 'get_all']);
     
     //Esta ruta es para listar todas las OFERTAS disponibles, por Jair.
-    Route::get('/admin/api/oferta/listarOfertas', [App\Http\Controllers\Admin\OfertaController::class, 'listarOfertas']);
+    //Route::get('/admin/api/oferta/listarOfertas', [App\Http\Controllers\Admin\OfertaController::class, 'listarOfertas']);
+
+    //Esta ruta es para listar el ESTADO de las OFERTAS para EDITAR, por Jair.
+    //Route::get('/admin/api/oferta/listarEstadoOfertas', [App\Http\Controllers\Admin\OfertaController::class, 'listarEstadoOfertas']);
 
     /*Esta es la ruta patra eliminar una OFERTA desde el dashboard EMPRESA, Jair*/
-    Route::delete('/admin/api/oferta/eliminar_oferta/{idOferta}', [App\Http\Controllers\Admin\OfertaController::class, 'eliminar_oferta']);
+    //Route::delete('/admin/api/oferta/eliminar_oferta/{idOferta}', [App\Http\Controllers\Admin\OfertaController::class, 'eliminar_oferta']);
 
     //////////////////////////////////////////////
     // POSTULACION //
@@ -223,31 +226,27 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-//Esta ruta es para listar todas las OFERTAS disponibles, por Jair.
-Route::get('/admin/api/oferta/listOfertas', [App\Http\Controllers\Admin\OfertaController::class, 'listOfertas']);
+
 
 //Esta ruta es para Registrar las EMPRESAS desde la vista welcome, por Jair.
-Route::post('regitEmpresa', [App\Http\Controllers\Admin\EmpresaController::class, 'regitEmpresa']);
+//Route::post('regitEmpresa', [App\Http\Controllers\Admin\EmpresaController::class, 'regitEmpresa']);
 
 //Esta ruta es para Registrar a los PRACTICANTES desde la vista welcome, por Jair.
-Route::post('registPrac', [App\Http\Controllers\Admin\PracticanteController::class, 'registPrac']);
+//Route::post('registPrac', [App\Http\Controllers\Admin\PracticanteController::class, 'registPrac']);
 
 /*Esta es la ruta de registro para el formulario de los Practicantes.*/
 Route::get('/registroTelepracticante', function(){
     return view('registroTelepracticante');
   })->name('registro');
 
-  //Esta ruta es para listar las Regiones del form de Registro de los PRACTICANTES desde la vista registro, por Jair.
-Route::get('listarCarreras', [App\Http\Controllers\Admin\CarreraController::class, 'listarCarreras']);
-
 //Esta ruta es para listar las Regiones del form de Registro de los PRACTICANTES desde la vista registro, por Jair.
-Route::get('listarRegion', [App\Http\Controllers\Admin\RegionController::class, 'listarRegion']);
+//Route::get('listarRegion', [App\Http\Controllers\Admin\RegionController::class, 'listarRegion']);
 
 //Esta ruta es para listar las Comunas del form de Registro de los PRACTICANTES desde la vista registro, por Jair.
-Route::get('listarComunas', [App\Http\Controllers\Admin\ComunaController::class, 'listarComunas']);
+//Route::post('listarComunas', [App\Http\Controllers\Admin\ComunaController::class, 'listarComunas']);
 
 //Esta ruta es para listar las Comunas del form de Registro de los PRACTICANTES desde la vista registro, por Jair.
-Route::get('insti', [App\Http\Controllers\Admin\InstitucionController::class, 'insti']);
+//Route::get('insti', [App\Http\Controllers\Admin\InstitucionController::class, 'insti']);
 
 //Esta ruta es para listar las CARRERAS del form de Registro de los PRACTICANTES desde EL dashboard, por Jair.
 Route::get('listarCarrera', [App\Http\Controllers\Admin\CarreraController::class, 'listarCarrera']);
@@ -260,16 +259,16 @@ Route::get('nivelEduc', [App\Http\Controllers\Admin\NivelEducacionalController::
 Route::get('prac', [App\Http\Controllers\Admin\TipoPracticaController::class, 'prac']);
 
 //Esta ruta es para listar las Comunas del form de Registro de los PRACTICANTES desde la vista registro, por Jair.
-Route::post('formPrac', [App\Http\Controllers\Admin\PracticanteController::class, 'formPrac'])->name('formPrac');
+//Route::post('formPrac', [App\Http\Controllers\Admin\PracticanteController::class, 'formPrac'])->name('formPrac');
 
-//Ruta para obtener el estado de las ogertas, Jair.
+//Ruta para obtener el estado de las ofertas, Jair.
 Route::get('estadoOfert', [App\Http\Controllers\Admin\EstadoPostController::class, 'estadoOfert']);
 
 /*Ruta para registrar la postulación del PRACTICANTE, Jair.*/
-Route::get('/admin/api/oferta/listarOfertaPracticante', [App\Http\Controllers\Admin\OfertaController::class, 'listarOfertaPracticante']);
+//Route::get('/admin/api/oferta/listarOfertaPracticante', [App\Http\Controllers\Admin\OfertaController::class, 'listarOfertaPracticante']);
 
 /*Ruta para registrar la postulación del PRACTICANTE, Jair.*/
-Route::post('store', [App\Http\Controllers\Admin\OfertaController::class, 'store']);
+//Route::post('store', [App\Http\Controllers\Admin\OfertaController::class, 'store']);
 
 /*Esta es la ruta de la vista de a CONFIRMACIÓN del PRACTICANTE a entrevista, Jair.*/
 Route::get('/confirmacionFechaCitacion', function(){
@@ -277,7 +276,7 @@ Route::get('/confirmacionFechaCitacion', function(){
 })->name('confirmacionFechaCitacion');
 
 //Esta ruta es para la CONFIRMACIÓN por parte del PRACTICANTE a la fecha de citación dada por la EMPRESA, por Jair.
-Route::post('confirmacionPracticante', [App\Http\Controllers\Admin\EmpresaController::class, 'confirmacionPracticante']);
+//Route::post('confirmacionPracticante', [App\Http\Controllers\Admin\EmpresaController::class, 'confirmacionPracticante']);
 
 /*Esta es la ruta de la vista de los DATOS del PRACTICANTE desde su DASHBOARD, Jair.*/
 Route::get('practicantes/datosPersonales', function(){
@@ -313,3 +312,13 @@ Route::get('practicantes/curriculumPracticante', function(){
 Route::get('registroPracticanteDashboard', function(){
     return view('registroPracticanteDashboard');
   })->name('editarTelepracticante');
+
+/*Vista para las OFERTAS del DASHBOARD PRACTICANTES, Jair.*/
+Route::get('/practicantes/index', function(){
+    return view('practicantes.index');
+  })->name('practicante.index');
+
+ /*Vista para las OFERTAS del DASHBOARD EMPRESAS, Jair.*/
+ Route::get('/empresas/index', function(){
+    return view('empresas.index');
+  })->name('empresa.index');

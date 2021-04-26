@@ -214,7 +214,7 @@ class EmpresaController extends Controller
         ], 200);
     }
     /*Registrar las EMPRESAS desde la vista WELCOME por Jair.*/
-    public function regitEmpresa(Request $request){
+    /*public function regitEmpresa(Request $request){
         //dd($request->empty());
         if (empty($request->run || $request->email || $request->razon_social || $request->nombre_ficticio
             || $request->giro || $request->descripcion || $request->usuario || $request->web || $request->telefono
@@ -235,7 +235,7 @@ class EmpresaController extends Controller
             ]);
         }else{
             $this->validate($request, [
-                /**Están funcionando los required.*/
+                /**Están funcionando los required.
                 'run' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
                 'razon_social' => ['required', 'string', 'max:255'],
@@ -249,7 +249,7 @@ class EmpresaController extends Controller
                 'password' => ['required','max:255'],
             ]);
             $user = User::create([
-                /*Funcionando correctamente.*/
+                /*Funcionando correctamente.
                 'name' => $request->usuario,
                 'run' => $request->run,
                 'email' => $request->email,
@@ -257,7 +257,7 @@ class EmpresaController extends Controller
             ])->assignRole(['Empresa']);
 
             $emp = Empresa::create([
-                /*Funcionando correctamente.*/
+                /*Funcionando correctamente.
                 'user_id' => $user->id,
                 'run' => $request->run,
                 'email' => $request->email,
@@ -269,7 +269,7 @@ class EmpresaController extends Controller
                 'telefono' => $request->telefono,
                 'direccion' => $request->direccion,
             ]);
-            /*Enviar correo de Bienvenida a las Empresas.*/
+            /*Enviar correo de Bienvenida a las Empresas.
             $details = [
                 //Titulo del Email
                 'email' => $request->email,
@@ -284,11 +284,11 @@ class EmpresaController extends Controller
             }
         }
 
-    }
+    }*/
     //
-    public function registrarOfer(Request $request){
+    /*public function registrarOfer(Request $request){
         //dd($request->carrera);
-        /*Validaciones de los campos.*/
+        /*Validaciones de los campos.
         $vali = $this->validate($request, [
             'nombre_oferta' => ['required', 'string', 'max:255'],
             'descripcion' => ['required', 'string','max:255'],
@@ -350,7 +350,7 @@ class EmpresaController extends Controller
                             ]);
                         }
                         
-                        /**Con esto, obtenemos el id de la oferta insertada correctamente.*/
+                        /**Con esto, obtenemos el id de la oferta insertada correctamente.
                         //dd($id_oferta->id);
                         return response()->json([
                             'status' => 'Muy bien!',
@@ -362,15 +362,15 @@ class EmpresaController extends Controller
                     }
                 }
             }else{
-                /**Con esto, obtenemos el id de la oferta insertada correctamente.*/
+                /**Con esto, obtenemos el id de la oferta insertada correctamente.
                 //dd($id_oferta->id);
                 return response()->json([
                     'status' => '2']);
             }
         }
-    }
+    }*/
     //Método para EDITAR una OFERTA.
-    public function editar_oferta(Request $request, Oferta $idOferta){
+    /*public function editar_oferta(Request $request, Oferta $idOferta){
         //dd($request);
         $data = request()->validate([
             'nombre_oferta' => 'required',
@@ -380,16 +380,17 @@ class EmpresaController extends Controller
             'fecha_inicio' =>  'required',
             'fecha_termino' => 'required',
             'cupos_totales' => 'required',
-            //'carrera' => 'required',
+            'cupos_totales' => 'required',
+            'estado_oferta_id' => 'required',
         ]);
         //dd($data);
         //
         $idOferta->update($data);
         return response()->json(1); 
-    }
+    }*/
     /*Método para listar los PRACTICANTES que postularon a la OFERTA  de alguna EMPRESA, 
     la lista es por EMPRESA y su OFERTA.*/
-    public function listarPracticantes(){  
+    /*public function listarPracticantes(){  
         //dd($request);
         $id =auth()->id();
         //echo $id;
@@ -412,10 +413,10 @@ class EmpresaController extends Controller
             return $prac;
         }
         
-    }
+    }*/
     /*Método para enviar por correo la fecha de postulación al practicante por parte de la
     EMPRESA*/
-    public function enviarPostulacionPracticante(Request $request){
+    /*public function enviarPostulacionPracticante(Request $request){
         //dd($request);
         $id_post = DB::table('postulacions')
                    ->select('id', 'oferta_id', 'practicante_id', 'nombre')
@@ -431,7 +432,7 @@ class EmpresaController extends Controller
                     'hora_citacion' => $request->horaCitacion,
                 ]);
             
-                /**Enviar EMAIL con fecha y Hora de citación.*/
+                /**Enviar EMAIL con fecha y Hora de citación.
                     $dat = DB::table('ofertas')
                     ->join('empresas', 'ofertas.empresa_id', '=', 'empresas.id')
                     ->select('empresas.nombre_ficticio')
@@ -456,9 +457,9 @@ class EmpresaController extends Controller
                     ]);
             }
         }
-    }
+    }*/
     /*Método para recibir la CONFIRMACIÓN del PRACTICANTE a su fecha de citación.*/
-    public function confirmacionPracticante(Request $request){
+    /*public function confirmacionPracticante(Request $request){
         //dd($request);
         
         $id_prac = DB::table('practicantes')
@@ -483,9 +484,9 @@ class EmpresaController extends Controller
                         'msg' => '1'
                     ]);
                 }
-    }
+    }*/
     /*Método para obtener a los PRACTICANTES que confirmaron la fecha de entrevista.*/
-    public function practicantesConfirmaron(){
+    /*public function practicantesConfirmaron(){
         $id = auth()->id();
         //echo $id;
         $run_prac = DB::table('estado_entrevistas')
@@ -505,9 +506,9 @@ class EmpresaController extends Controller
             return $prac;
             //echo $prac;
         }
-    }
+    }*/
     /*Método para actualizar los datos personales del PRACTICAnte, Jair */
-    public function editarDatosPrac(Request $request, Practicante $id){
+    /*public function editarDatosPrac(Request $request, Practicante $id){
         //dd($request->id);
 
         $data = request()->validate([
@@ -540,9 +541,9 @@ class EmpresaController extends Controller
                 'msg' => '0'
             ]);
         }
-    }
+    }*/
     /*Obtener los datos de la EMPRESA para listarlos desde su DASHBOARD, Jair.*/
-    public function datEmp(){
+    /*public function datEmp(){
         
         $empresa = auth()->id();
         //echo $empresa;
@@ -552,7 +553,7 @@ class EmpresaController extends Controller
                 ->where('user_id', '=', $empresa)
                 ->get();
         return $dat;
-    }
+    }*/
     /*Método para actualizar los datos personales del PRACTICAnte, Jair */
     public function editarDatosEmp(Request $request, Empresa $id){
         //dd($request->id);

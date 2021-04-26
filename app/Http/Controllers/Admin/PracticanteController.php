@@ -245,9 +245,29 @@ class PracticanteController extends Controller
             'practicante' => $practicante
         ], 200);
     }
-    /*Método para insertar a un PRACTICANTE desde la vista WELCOME, Jair*/
+    /*Este método se encuentra en la api funcionando correctamente, Jair
     public function registPrac(Request $request){
-        //dd($request->email);
+        //dd($request);
+        data = request()->validate([
+            'comuna' => ['required','max:1'],
+            'institucion' => ['required'],
+            'educacion' => ['required'],
+            'region' => ['required'],
+            'practica' => ['required'],
+            'rut' => ['required', 'string'],
+            'nombre_completo' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'max:255'],
+            'cantidadHora' => ['required', 'integer'],
+            'cantidadMeses' => ['required', 'integer'],
+            'equipoComputacional' => ['required', 'string'],
+            'internetFijo' => ['required', 'string'],
+            'hab.*' => ['required','min:3','max:3'],
+            'habilida_blandas.*' => ['required','min:1','max:1'],
+            'habilid_blandas.*' => ['required','min:1','max:1'],
+            'habili_blandas.*' => ['required','min:1','max:1'],
+            'habilidades_profesionales.*' => ['required','min:3' ,'max:3'],
+            'experiencia' => ['required', 'string'],
+        ]);
         $exist = DB::table('users')
         ->select('email')
         ->where('email', '=', $request->email)
@@ -260,7 +280,7 @@ class PracticanteController extends Controller
             ]);
         }else{
             $user = User::create([
-                /*Funcionando correctamente.*/
+                /*Funcionando correctamente.
                 'name' => $request->usuario,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -271,7 +291,7 @@ class PracticanteController extends Controller
             if ($user) {  
                 $user->id; 
                 $prac = Practicante::create([
-                    /*Funcionando correctamente.*/
+                    /*Funcionando correctamente.
                     'user_id' => $user->id,
                     'carrera_id' => $request->carrera,
                     'email' => $request->email,
@@ -293,11 +313,10 @@ class PracticanteController extends Controller
                     'msg' => 'correo enviado',
                 ]);
         }
-    }
+    }*/
     /*Actualizar los datos del practicante con el formulario de registro.*/
-    public function formPrac(Request $request){
-        
-        //dd($request->img);
+    /*public function formPrac(Request $request){
+        //dd($request);
         $e = collect(explode( ',', $request->hab));
         $cv = collect(explode( ',', $request->hab_profs));
         if(count($e) != 3 || count($cv) != 3){
@@ -325,10 +344,10 @@ class PracticanteController extends Controller
             'habili_blandas.*' => ['required','min:1','max:1'],
             'habilidades_profesionales.*' => ['required','min:3' ,'max:3'],
             'experiencia' => ['required', 'string'],
-        ]);*/
+        ]);
         if ($request->hasFile('img')) {
         /*Actualizamos los datos del Practicante cuando llene el formulario 
-        que se envió a su correo electrónico.*/
+        que se envió a su correo electrónico.
         $prac = DB::table('practicantes')
         ->where('email','=', $request->email)
         ->where('run','=', $request->rut)
@@ -350,14 +369,14 @@ class PracticanteController extends Controller
                        //'experiencia' => $request->experiencia,
                     ));
                 //$prac->save();
-            /*Obtendremos el id del usuario que esta completando su registro.*/
+            /*Obtendremos el id del usuario que esta completando su registro.
             $_id = DB::table('practicantes')
             ->select('id')
             ->where('email', '=', $request->email)
             ->where('run', '=', $request->rut)
             ->get();
             foreach ($_id as $key) {
-                /*Funcionando correctamente.*/
+                /*Funcionando correctamente.
                 $practicante = $request->all();
                 //dd($request->img);
                 $practicante = new CertificadoPracticante();
@@ -384,7 +403,7 @@ class PracticanteController extends Controller
             }
         }else if($request->img === "undefined"){
         /*Actualizamos los datos del Practicante cuando llene el formulario 
-        que se envió a su correo electrónico.*/
+        que se envió a su correo electrónico.
         $pra = DB::table('practicantes')
         ->where('email','=', $request->email)
         //->where('run','=', $request->rut)
@@ -411,9 +430,9 @@ class PracticanteController extends Controller
                         'msg' => 'estamos Full',
                     ]);
         }
-    }
+    }*/
     /*Datos del PRACTICANTE para mostrar y EDITAR desde su DASHBOARD, Jair*/
-    public function datPract(){
+    /*public function datPract(){
         $id = auth()->id();
         //echo $id;
         $prac = DB::table('practicantes')
@@ -422,9 +441,9 @@ class PracticanteController extends Controller
         ->where('user_id', '=', $id)
         ->get();
         return $prac;
-    }
+    }*/
     /*Datos del PRACTICANTE para mostrar sus CERTIFICADOS desde su DASHBOARD, Jair*/
-    public function certificadosPracticantes(){
+    /*public function certificadosPracticantes(){
         $id = auth()->id();
         //echo $id;
         $prac = DB::table('practicantes')
@@ -439,9 +458,9 @@ class PracticanteController extends Controller
                     ->get();
                     return $prac;
         }
-    }
+    }*/
     /*EDITAR CERTIFICADOS desde su DASHBOARD Practicante, Jair*/
-    public function editarCertificado(Request $request){
+    /*public function editarCertificado(Request $request){
         //dd($request->img);                 
         $practicante = $request->all();
         $practicante = new CertificadoPracticante();
@@ -481,9 +500,9 @@ class PracticanteController extends Controller
                 'status' => '1'
             ]);
         }
-    }
+    }*/
     /*Crear Curso con CERTIFICADOS desde su DASHBOARD Practicante, Jair*/
-    public function crearCurso(Request $request){
+    /*public function crearCurso(Request $request){
         //dd($request); 
         $id = auth()->id();
         //echo $id;
@@ -520,14 +539,14 @@ class PracticanteController extends Controller
                 ]);
             }
         }
-    }
+    }*/
     /**Método para ELIMINAR un CURSO con ERTIFICADO.Jair*/
-    public function eliminar_curso(CertificadoPracticante $id){
+    /*public function eliminar_curso(CertificadoPracticante $id){
         //dd($id);
         $id->delete();
-    }
+    }*/
     /*Datos del PRACTICANTE para mostrar sus CERTIFICADOS desde su DASHBOARD, Jair*/
-    public function curriculumPracticantes(){
+    /*public function curriculumPracticantes(){
         $id = auth()->id();
 
         $prac = DB::table('practicantes')
@@ -541,9 +560,9 @@ class PracticanteController extends Controller
                     ->get();
             return $cur;
         }
-    }
+    }*/
     /*Método para ELIMINAR un CURSO con ERTIFICADO.Jair*/
-    public function crearCurriculum(Request $request){
+    /*public function crearCurriculum(Request $request){
         //dd($request); 
         $id = auth()->id();
         //echo $id;
@@ -574,9 +593,9 @@ class PracticanteController extends Controller
                 ]);
             }
         }
-    }
+    }*/
     /*EDITAR CERTIFICADOS desde su DASHBOARD Practicante, Jair*/
-    public function editarCurriculum(Request $request){
+    /*public function editarCurriculum(Request $request){
         //dd($request);                 
         $practicante = $request->all();
         $practicante = new CurriculumPracticante();
@@ -601,14 +620,14 @@ class PracticanteController extends Controller
                 'status' => '2'
             ]);
         }
-    }
+    }*/
     /**Método para ELIMINAR el CURRICULUM del PRACTICANTE desde su DASHBOARD.Jair*/
-    public function eliminar_curriculum(CurriculumPracticante $id){
+    /*public function eliminar_curriculum(CurriculumPracticante $id){
         //dd($id);
         $id->delete();
-    }
+    }*/
     /**Método para ELIMINAR el CURRICULUM del PRACTICANTE desde su DASHBOARD.Jair*/
-    public function editarFormPrac(Request $request){
+    /*public function editarFormPrac(Request $request){
         //dd($request);
         $e = collect(explode( ',', $request->hab));
         $cv = collect(explode( ',', $request->hab_profs));
@@ -634,7 +653,7 @@ class PracticanteController extends Controller
             'hab.*' => ['required','min:3','max:3'],
             /*'habilida_blandas.*' => ['required','min:1','max:1'],
             'habilid_blandas.*' => ['required','min:1','max:1'],
-            'habili_blandas.*' => ['required','min:1','max:1'],*/
+            'habili_blandas.*' => ['required','min:1','max:1'],
             'habilidades_profesionales.*' => ['required','min:3' ,'max:3'],
             'experiencia' => ['required', 'string'],
         ]);
@@ -672,5 +691,5 @@ class PracticanteController extends Controller
                 'msg' => 'error',
             ]);
         }
-    }
+    }*/
 }

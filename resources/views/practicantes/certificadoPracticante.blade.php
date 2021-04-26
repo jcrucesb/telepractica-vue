@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.practicante')
 
 @section('title')
     Practicante
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap4.min.css">
 @endsection
 
-@section('content-admin')
+@section('content-practicante')
 <div class="container">
     <h1 class="text-center">Tus Certificados</h1>
     <div id="certificadoPracticante">

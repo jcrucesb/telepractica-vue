@@ -18,7 +18,7 @@ class PostulacionSeeder extends Seeder
      */
     public function run()
     {
-        Postulacion::truncate();
+        /*Postulacion::truncate();
 
         // Creacion: Postulacion -(proviene)-> oferta && estado && supervisor && carreras
         foreach (Oferta::all() as $oferta) {
@@ -55,6 +55,6 @@ class PostulacionSeeder extends Seeder
                     }
                 }
             }
-        }
+        }*/
     }
 }

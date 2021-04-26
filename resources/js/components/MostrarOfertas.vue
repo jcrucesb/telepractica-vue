@@ -146,7 +146,7 @@ export default {
     },
     methods: {
         obtenerOferta(){
-            axios.get("/admin/api/oferta/listOfertas")
+            axios.get("/api/ofertas/listOfertas")
             .then(response => {
                 console.log(response);
                 console.log(this.listarOferta = response.data);
@@ -156,7 +156,7 @@ export default {
             })
         },
         carreras(){
-            axios.get("listarCarreras")
+            axios.get("api/carreras/listCarreras")
             .then(response => {
                 console.log(this.listarCarrera = response.data);
             })
@@ -166,7 +166,7 @@ export default {
         },
         regisPracticante(){
             this.form
-            .post("registPrac")
+            .post("/api/practicantes/registPrac")
             .then((resp) => {
                 if (resp.data.status == '2') {
                     Swal.fire({

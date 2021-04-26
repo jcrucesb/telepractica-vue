@@ -18,6 +18,7 @@ class OfertaSeeder extends Seeder
      */
     public function run()
     {
+        /*
         Oferta::truncate();
 
         // Creacion: Oferta -(proviene)-> empresa && estado && supervisor && carreras
@@ -59,6 +60,6 @@ class OfertaSeeder extends Seeder
             foreach ($carreras as $carrera) {
                 $oferta->carreras()->attach($carrera);
             }
-        }
+        }*/
     }
 }

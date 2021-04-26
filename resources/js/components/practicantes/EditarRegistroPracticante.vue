@@ -41,7 +41,7 @@
                     <div class="col">
                         <div class="form-group">
                         <label>Región</label>
-                            <select name="" id="" v-model="form.region">
+                            <select name="" id="" v-model="form.region" @change="regiones(form.region)">
                                 <option v-for="opcion in region" :value="opcion.id" :key="opcion.id">
                                     {{ opcion.nombre }}
                                 </option>
@@ -270,6 +270,7 @@ export default {
         educacion:[],
         practica:[],
         id:null,
+        comun:null,
         nombre_completo:null,
         rut: null,
         email: null,
@@ -304,7 +305,7 @@ export default {
   },
     mounted(){
         this.obtenerRegion();
-        this.obtenerComuna();
+        //this.obtenerComuna();
         this.obtenerInstitucion();
         this.educacional();
         this.tipoPractica();
@@ -315,7 +316,7 @@ export default {
     methods: {
         //Funcionando correctamente.
         obtenerCarrera(){
-            axios.get("listarCarreras")
+            axios.get("/api/carreras/listarCarrerasFormPracticante")
             .then(response => {
                 console.log(this.carrera = response.data);
             })
@@ -324,27 +325,41 @@ export default {
             })
         },
         obtenerRegion(){
-            axios.get("listarRegion")
+            axios.get("/api/regiones/listarRegion")
             .then(response => {
-                console.log(this.region = response.data);
+                this.region = response.data;
+            })
+            .catch(error=>{
+                let errorObject=JSON.parse(JSON.stringify(error));
+            })
+        },
+        regiones(h){
+            let id = {
+                'id_region' : h,
+            }
+            this.comun = h;
+            axios.post("/api/comunas/listarComunas", id)
+            .then(response => {
+                this.comuna = response.data;
+                $('.mostrarComuna').show();
             })
             .catch(error=>{
                 let errorObject=JSON.parse(JSON.stringify(error));
             })
         },
         //Funcionando correctamente.
-        obtenerComuna(){
-            axios.get("listarComunas")
+        /*obtenerComuna(){
+            axios.get("")
             .then(response => {
                 console.log(this.comuna = response.data);
             })
             .catch(error=>{
                 let errorObject=JSON.parse(JSON.stringify(error));
             })
-        },
+        },*/
         //Funcionando correctamente.
         obtenerInstitucion(){
-            axios.get("insti")
+            axios.get("/api/instituciones/insti")
             .then(response => {
                 console.log(this.instituciones = response.data);
             })
@@ -449,7 +464,7 @@ export default {
             debugger;
             /*Es necesaria para los files.*/
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/admin/api/practicante/editarFormPrac', formDa,{
+            axios.post('/api/practicantes/editarFormPrac', formDa,{
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }

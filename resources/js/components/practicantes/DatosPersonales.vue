@@ -95,6 +95,7 @@ export default {
             practicante: [],
             id: null,
             editamos: [],
+            api_token: localStorage.getItem('respuesta'),
         };
     },
     mounted(){
@@ -136,7 +137,12 @@ export default {
             });
         },
         obtenerPract(){
-            axios.get("/admin/api/practicante/datPract")
+            axios.get("/api/practicantes/datPract",{headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(response => {
                 this.practicante = response.data;
                 this.tablaOferta();
@@ -149,7 +155,12 @@ export default {
             this.id = prac.id;
         },
         editarDatos(){
-            axios.put('/admin/empresa/editarDatosPrac/'+ this.id,this.editamos)
+            axios.put('/api/empresas/editarDatosPrac/'+ this.id,this.editamos,{headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(response => {
                 if (response.data.msg == '1'){
                     

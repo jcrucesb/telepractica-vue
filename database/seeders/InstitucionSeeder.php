@@ -7,6 +7,7 @@ use App\Models\Carrera;
 use App\Models\Institucion;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class InstitucionSeeder extends Seeder
 {
@@ -27,9 +28,10 @@ class InstitucionSeeder extends Seeder
             $user->run = strval(1100000 + $i) . "-" . strval(random_int(0, 9));
             $user->email = "institucion$i@email.com";
             $user->password = Hash::make("institucion$i");
+            $user->api_token = Str::random(10);
+            $user->rol_id = 3;
             $user->estado_usuario_id = random_int(1, 3);
-            //$user->rol_id = 3;
-
+            //$user->rol_id = 3; 
             $user->save();
 
             $institucion = new Institucion();

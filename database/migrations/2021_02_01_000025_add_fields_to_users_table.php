@@ -16,7 +16,6 @@ class AddFieldsToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('estado_usuario_id')->nullable()->constrained();
             //$table->foreignId('rol_id')->nullable()->constrained();
-            
             $table->string('run', 200)->nullable()->unique();
         });
     }

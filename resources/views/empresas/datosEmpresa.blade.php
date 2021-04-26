@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.empresa')
 
 @section('title')
     Empresitas
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap4.min.css">
 @endsection
 
-@section('content-admin')
+@section('content-empresa')
 <center>
     <h1 class="mt-3">Datos Personales</h1>
     <br>

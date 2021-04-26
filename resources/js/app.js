@@ -49,6 +49,9 @@ require('datatables.net-select-bs4');
 
 // Components
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+/*Coponente Login para enviar el email y el password, Jair*/
+Vue.component('userlogin-component', require('./components/userLogin/UserLogin.vue').default);
+
 Vue.component('user-component', require('./components/UserComponent.vue').default);
 
 Vue.component('empresa-component', require('./components/EmpresaComponent.vue').default);
@@ -98,7 +101,7 @@ Vue.component('curriculumpracticante-component', require('./components/practican
 
 /*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
 Vue.component('editarregistropracticante-component', require('./components/practicantes/EditarRegistroPracticante.vue').default);
-
+userLogin
 // MomentsJS
 var moment = require('moment');
 
@@ -142,6 +145,10 @@ Vue.component(AlertError.name, AlertError)
 
 const app = new Vue({
   el: '#app',
+});
+/**Jair, Certificado Practicante.*/
+const userLogin = new Vue({
+  el: '#userLogin',
 });
 /**Jair, Agregar EMPRESA vista welcome.*/
 const emp = new Vue({

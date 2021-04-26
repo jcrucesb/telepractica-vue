@@ -105,6 +105,7 @@ export default {
             btnCrear: false,
             btnEditar:false,
             titulo:null,
+            api_token: localStorage.getItem('respuesta'),
             fields: {
                 nombreCurso:null,
                 nombreProfesionalCurso:null,
@@ -143,7 +144,12 @@ export default {
             });
         },
         obtenerCertificados(){
-            axios.get("/api/practicante/certificadosPracticantes")
+            axios.get("/api/practicantes/certificadosPracticantes",{headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(response => {
                 this.listarCertificados = response.data;
                 this.tablaOferta();
@@ -163,8 +169,6 @@ export default {
             this.editamos = {nombreCurso: this.nombreCurso, nombreProfesionalCurso: this.nombreProfesionalCurso,
                                 duracionMesesCurso: this.duracionMesesCurso, duracionHorasCurso: this.duracionHorasCurso,
                                 certificacion: this.certificacion, rutaArchivo: this.rutaArchivo};
-            console.log(this.editamos);
-            debugger;
             this.titulo = 'Agregar Cursos';
             this.btnCrear = true;
             this.btnEditar=false;
@@ -205,7 +209,12 @@ export default {
                 fields.append(key, this.fields[key])
             }
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/admin/practicante/editarCertificado', fields,{
+            axios.post('/api/practicantes/editarCertificado', fields,{headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            },{
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }   
@@ -239,7 +248,12 @@ export default {
                 fields.append(key, this.fields[key])
             }
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/admin/practicante/crearCurso', fields,{
+            axios.post('/api/practicantes/crearCurso', fields,{headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            },{
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }   
@@ -274,7 +288,12 @@ export default {
             })
             .then((willDelete) => {
                 if (willDelete) {
-                    axios.delete('/admin/practicante/eliminar_curso/' + id)
+                    axios.delete('/api/practicantes/eliminar_curso/' + id,{headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
                     .then(resp => {
                         Swal.fire({
                             title: "Listo!",

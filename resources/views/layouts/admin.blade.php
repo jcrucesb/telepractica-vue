@@ -111,7 +111,7 @@
                                         <p>Practicantes</p>
                                     </a>
                                 </li>
-                                @endif
+                                @endif 
                                 <!---->
                                 <!--Solo se mostrará esta opción al ADMINISTRADOR.-->
                                 @if (auth()->user()->can('admin.home'))
@@ -122,38 +122,6 @@
                                     </a>
                                 </li>
                                 @endif
-                                <!--EMPRESAS.-->
-                                @if (auth()->user()->can('empresas.index'))
-                                <li class="nav-item">
-                                    <a href="{{ route('empresa.index') }}" class="nav-link">
-                                        <i class="fas fa-user-tie fa-sm"></i>
-                                        <p>Empresas</p>
-                                    </a>
-                                </li>
-                                @endif
-                                <!---->
-                                <!--EMPRESAS, mostrar todos los practicantes que aceptaron la citación
-                                    de la entrevista.-->
-                                @if (auth()->user()->can('empresas.index'))
-                                <li class="nav-item">
-                                    <a href="{{ route('confirmacionEntrevistaPracticantes') }}" class="nav-link">
-                                        <i class="fas fa-user-tie fa-sm"></i>
-                                        <p>Aceptaron Entrevista</p>
-                                    </a>
-                                </li>
-                                @endif
-                                <!---->
-                                <!--EMPRESAS, mostrar todos los practicantes que aceptaron la citación
-                                    de la entrevista.-->
-                                    @if (auth()->user()->can('empresas.index'))
-                                    <li class="nav-item">
-                                        <a href="{{ route('datosEmpresa') }}" class="nav-link">
-                                            <i class="fas fa-user-tie fa-sm"></i>
-                                            <p>Datos Empresa</p>
-                                        </a>
-                                    </li>
-                                    @endif
-                                    <!---->
                                 <!---->
                                 @if (auth()->user()->can('admin.home'))
                                 <li class="nav-item">
@@ -202,7 +170,7 @@
                                     </a>
                                 </li>
                                 @endif
-                                @if (auth()->user()->can('practicante.index'))
+                                @if (Auth::user()->can('practicante.index'))
                                 <li class="nav-item">
                                     <a href="{{ route('practicante.index') }}" class="nav-link">
                                         <i class="fas fa-briefcase"></i>

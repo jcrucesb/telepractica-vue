@@ -95,8 +95,8 @@ class RegionController extends Controller
         ], 200);
     }
     /*Listar las comunas del formulario de registro de los practicantes, Jair*/
-    public function listarRegion(){
+    /*public function listarRegion(){
         $region =  Region::all()->toArray();
         return  $region;
-    }
+    }*/
 }

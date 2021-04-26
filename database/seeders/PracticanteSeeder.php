@@ -6,6 +6,7 @@ use App\Models\Practicante;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PracticanteSeeder extends Seeder
 {
@@ -57,10 +58,12 @@ class PracticanteSeeder extends Seeder
             $practicante->save();
         }
         */
-        $user = User::create([
+        /*$user = User::create([
             'name' => 'kaido',
             'email' => 'kaido@gmail.com',
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('12'),
+            'api_token' => Str::random(10),
+            'rol_id' => 1,
             'estado_usuario_id' => 2,
             'run' => '2333344-2',
         ])->assignRole('Practicante');
@@ -69,13 +72,43 @@ class PracticanteSeeder extends Seeder
             'user_id' => $user->id,
             'carrera_id' => 1,
             'comuna_id' => 2,
-            'institucion_id' => 2,
+            'institucion_id' => 3,
             'nivel_educacional_id' => 2,
             'region_id' => 2,
             'tipo_practica_id' => 2,
             'run' => '333333333-3',
             'nombre_completo' => 'Kaido-Sama',
             'email' => 'kaido@gmail.com',
+            'telefono' => '898989898',
+            'cantidad_horas' => 200,
+            'cantidad_meses' => 3,
+            'equipo_computacional' => 'si',
+            'internet_fijo' => 'si',
+            'hab_blandas' => null,
+            'hab_profesionals' => null,
+        ]);*/
+
+        $user = User::create([
+            'name' => 'jair',
+            'email' => 'jair@gmail.com',
+            'password' => Hash::make('12'),
+            'api_token' => Str::random(10),
+            'rol_id' => 1,
+            'estado_usuario_id' => 2,
+            'run' => '21344-2',
+        ])->assignRole('Practicante');
+
+        Practicante::create([
+            'user_id' => $user->id,
+            'carrera_id' => 1,
+            'comuna_id' => 2,
+            'institucion_id' => 3,
+            'nivel_educacional_id' => 2,
+            'region_id' => 2,
+            'tipo_practica_id' => 2,
+            'run' => '21344-2',
+            'nombre_completo' => 'jair-Sama',
+            'email' => 'jair@gmail.com',
             'telefono' => '898989898',
             'cantidad_horas' => 200,
             'cantidad_meses' => 3,

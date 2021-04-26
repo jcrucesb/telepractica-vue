@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -31,9 +32,11 @@ class UserSeeder extends Seeder
         }
         */
         User::create([
-            'name' => 'Mauricio',
-            'email' => 'mauricio@gmail.com',
+            'name' => 'mo',
+            'email' => 'momo@gmail.com',
             'password' => Hash::make('12345678'),
+            'api_token' => Str::random(10),
+            'rol_id' => 5,
             'estado_usuario_id' => 2,
             'run' => '22222222-2',
         ])->assignRole('Superusuario');

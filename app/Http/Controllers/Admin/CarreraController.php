@@ -113,19 +113,10 @@ class CarreraController extends Controller
             'carreras' => $carreras
         ], 200);
     }
-    /**Este método es para listar las carreras y el practicante se registre de la vista
-    WELCOME.*/
-    public function listarCarreras(){
+    /*public function listCarreras(){
         $id_carrera = DB::table('carreras')
         ->select('id','nombre')
         ->get();
         return $id_carrera;
-    }
-    
-    public function listCarreras(){
-        $id_carrera = DB::table('carreras')
-        ->select('id','nombre')
-        ->get();
-        return $id_carrera;
-    }
+    }*/
 }

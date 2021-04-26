@@ -37,6 +37,7 @@ export default {
     data(){
         return{
             practicante: [],
+            api_token:localStorage.getItem('respuesta'),
         };
     },
     mounted(){
@@ -71,7 +72,12 @@ export default {
             });
         },
         obtenerPract(){
-            axios.get("/practicantesConfirmaron")
+            axios.get("/api/empresas/practicantesConfirmaron", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(response => {
                 this.practicante = response.data;
                 this.tablaOferta();

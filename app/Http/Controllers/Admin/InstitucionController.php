@@ -185,10 +185,10 @@ class InstitucionController extends Controller
         ], 200);
     }
     /*Listar las comunas del formulario de registro de los practicantes, Jair*/
-    public function insti(){
+    /*public function insti(){
         $inst = DB::table('institucions')
                   ->select('id', 'nombre')
                   ->get();
         return  $inst;
-    }
+    }*/
 }

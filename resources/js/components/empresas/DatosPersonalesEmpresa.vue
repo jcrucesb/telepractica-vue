@@ -115,6 +115,7 @@ export default {
             titulo:null,
             btnEditar:null,
             editarDatos: [],
+            api_token:localStorage.getItem('respuesta'),
         };
     },
     mounted(){
@@ -144,12 +145,16 @@ export default {
         },
         //
         obtenerEmp(){
-            axios.get("/empresa/datEmp")
-            .then(response => {
+            
+            axios.get("/api/empresas/datEmp", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            }).then(response => {
                 this.empresa = response.data;
                 this.tabla();
-            })          
-            .catch(error=>{
+            }).catch(error=>{
                 let errorObject=JSON.parse(JSON.stringify(error));
             })
         },
@@ -162,8 +167,13 @@ export default {
             $('#edit').modal('show');
         },
         editar(){
-            axios.put('/admin/empresa/editarDatosEmp/'+this.id, this.editarDatos)
-            .then(resp => {
+            axios.put('/api/empresas/editarDatosEmp/'+this.id, this.editarDatos, {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
+            .then(resp => { 
                 Swal.fire({
                     title: "Listo!",
                     text: "La Oferta ha sido Editada!",

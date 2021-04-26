@@ -33,6 +33,7 @@
                         <th scope="col" class="text-center">Termino Oferta</th>
                         <th scope="col" class="text-center">Fecha Creación</th>
                         <th scope="col" class="text-center">Requisitos Min.</th>
+                        <th scope="col" class="text-center">Estado Oferta</th>
                         <th scope="col" class="text-center" data-priority="1">Acción</th>
                     </tr>
                 </thead>
@@ -50,6 +51,7 @@
                         <td class="text-white text-center">{{agregar.fecha_termino}}</td>
                         <td class="text-white text-center">{{agregar.created_at}}</td>
                         <td class="text-white text-center">{{agregar.requisitos_min}}</td>
+                        <td class="text-white text-center">{{agregar.nombre}}</td>
                         <td class="text-white text-center">
                             <button type="button" class="btn btn-warning" @click="abrirModalEditar(agregar)">Editar</button>
                             <button type="button" class="btn btn-danger mt-2" @click="eliminar(agregar)">Eliminar</button>
@@ -134,6 +136,15 @@
                             <br>
                             <input type="text" v-model="editarOferta.requisitos" name="requisitos" id="requisitos">
                         </div>
+                        <label for="">Estado de la Oferta</label>
+                        <br>
+                        <div class="form-group">
+                            <select v-model="editarOferta.estado_oferta_id" @click="listarEstadoOferta()">
+                                <option v-for="opcion in estado_ofertas" :value="opcion.id" :key="opcion.id">
+                                    {{ opcion.nombre }}
+                                </option>
+                            </select>
+                        </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" @click.prevent="crear()" v-if="btnCrear">Registrar</button>
                             <button type="submit" class="btn btn-warning" @click.prevent="editar()" v-if="btnEditar">Editar</button>
@@ -180,7 +191,7 @@
                     <input type="time" name="horaCitacion" id="horaCitacion">
                 </td>
                 <td class="text-dark text-center">
-                    <button  type="button" @click.prevent="postulacion();" class="btn btn-success btnPostulacion">Enviar</button>
+                    <button type="submit" @click.prevent="postulacion();" class="btn btn-success btnPostulacion">Enviar</button>
                 </td>
             </tr>
         </tbody>
@@ -243,21 +254,29 @@ export default {
             listarOfertazos: [],
             listarCarrera: [],
             carrera:null,
+            estado_ofertas:[],
+            estado_oferta_id:null,
             titulo: '',
             created_at:null,
             requisitos:null,
             editarOferta: [],
             btnCrear: false,
             btnEditar:false,
+            api_token:localStorage.getItem('respuesta'),
         };
     },
     mounted(){
+        //this.usuario();
         //this.tabla();
         //this.tablaOferta();
         this.getUser();
         this.seleccionCarrera();
+        this.listarEstadoOferta();
     },
     methods:{
+        usuario(){
+            
+        },
         //
         tabla(){
             //this.login();
@@ -318,6 +337,7 @@ export default {
             { width: "13%" },
             { width: "13%" },
             { width: "13%" },
+            { width: "13%" },
           ],  
                 });
             });
@@ -336,8 +356,16 @@ export default {
         },
         //
         getUser(){
+            var respuestaQueGuarde = localStorage.getItem('respuesta');
+            console.log(respuestaQueGuarde);
             /**Enviar por axios.*/
-            axios.get("/api/practicante/listarPracticantes")
+            //this.api_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMmFhODQ5ODc5MThhNDQ4YWQxZjAzZTBiMmMzNTA5NGY5OTM4MDA4NWM3ZTExM2Q4Y2FhY2U2NDVkNGQ1YzA4MDI1MWVkNzEyMTk5YTg1OWIiLCJpYXQiOjE2MTkxOTg0NDAuMDM2MDg4LCJuYmYiOjE2MTkxOTg0NDAuMDM2MDkxLCJleHAiOjE2NTA3MzQ0NDAuMDAxODMsInN1YiI6IjIiLCJzY29wZXMiOltdfQ.dMLGjve7RTwoFeqbSM8E5E3j_L2dnI5M91MtS7-_ISdjTq2b9YvNx5szJPNH3CkMdNlPpMo_vKm72cgZ83ioL6YMm-I9t27sW3Tj4uswXpaFC_sBMkFZEep7vgGZczI4RjGeDwh2lYhk-CFbj5_tmPGaDZkitwO3q8Lxm20KEGhqsT3yn4fCQv0oKBBlIPENWJHwzRbEQ8WK9IX6ZycV7-oVA_6eXiz4ZHwC-efRkQW606AgH9upGga2cX-bbZs40D8Gui8qyD0ViIbtkqRiEYHBrSe4YyNVj5Lbtj64cGiyuqcRusi0P9PNVvFWJEgxcnq6kZyw-cszAR5N3tfjhm2M2finWQjfiO-BozWz4fc955bAZAGlsbBBY7cdsQvnjoiySvZkZHkF5gO0PQBkV0-QM_1sregrXE4eBosN0gIBSitKJgMAGalu9VHeM924egLnUOrKw94M2W1z69wSlmk-ZGX7XKMj0oS0LYPFQdyZxiBlm4HJJzO6sE59IfpJpeoroU8HG-AttpCuQrIp2gShxpdJ_cRCjg8vK8eUmGLg__WwQto3W8NsQSA_PWdzahosHV9NNbmyZnmIMqeQO-xRH3XGx-sXPlvWMKQlDTgUbLtUbYiVOg9uUREPKiyUZXGpsdzV32usxm2FpAXGOA5qbZmuUFxTt63PM2lODDs";
+            axios.get("/api/empresas/listarPracticantes", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(res => {
                 this.practicante = res.data;
                 this.tabla();
@@ -372,7 +400,13 @@ export default {
         },
         //Este es para listar las carreras disponibles.
         seleccionCarrera(){
-            axios.get("/admin/api/carrera/listCarreras")
+            //this.api_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMmFhODQ5ODc5MThhNDQ4YWQxZjAzZTBiMmMzNTA5NGY5OTM4MDA4NWM3ZTExM2Q4Y2FhY2U2NDVkNGQ1YzA4MDI1MWVkNzEyMTk5YTg1OWIiLCJpYXQiOjE2MTkxOTg0NDAuMDM2MDg4LCJuYmYiOjE2MTkxOTg0NDAuMDM2MDkxLCJleHAiOjE2NTA3MzQ0NDAuMDAxODMsInN1YiI6IjIiLCJzY29wZXMiOltdfQ.dMLGjve7RTwoFeqbSM8E5E3j_L2dnI5M91MtS7-_ISdjTq2b9YvNx5szJPNH3CkMdNlPpMo_vKm72cgZ83ioL6YMm-I9t27sW3Tj4uswXpaFC_sBMkFZEep7vgGZczI4RjGeDwh2lYhk-CFbj5_tmPGaDZkitwO3q8Lxm20KEGhqsT3yn4fCQv0oKBBlIPENWJHwzRbEQ8WK9IX6ZycV7-oVA_6eXiz4ZHwC-efRkQW606AgH9upGga2cX-bbZs40D8Gui8qyD0ViIbtkqRiEYHBrSe4YyNVj5Lbtj64cGiyuqcRusi0P9PNVvFWJEgxcnq6kZyw-cszAR5N3tfjhm2M2finWQjfiO-BozWz4fc955bAZAGlsbBBY7cdsQvnjoiySvZkZHkF5gO0PQBkV0-QM_1sregrXE4eBosN0gIBSitKJgMAGalu9VHeM924egLnUOrKw94M2W1z69wSlmk-ZGX7XKMj0oS0LYPFQdyZxiBlm4HJJzO6sE59IfpJpeoroU8HG-AttpCuQrIp2gShxpdJ_cRCjg8vK8eUmGLg__WwQto3W8NsQSA_PWdzahosHV9NNbmyZnmIMqeQO-xRH3XGx-sXPlvWMKQlDTgUbLtUbYiVOg9uUREPKiyUZXGpsdzV32usxm2FpAXGOA5qbZmuUFxTt63PM2lODDs";
+            axios.get("/api/carreras/listCarreras", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(res => {
                 //
                 this.listarCarrera = res.data;
@@ -389,10 +423,42 @@ export default {
         //
         listarOfertas(){
             /**Enviar por axios.*/
-            axios.get("/admin/api/oferta/listarOfertas")
+            //this.api_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMmFhODQ5ODc5MThhNDQ4YWQxZjAzZTBiMmMzNTA5NGY5OTM4MDA4NWM3ZTExM2Q4Y2FhY2U2NDVkNGQ1YzA4MDI1MWVkNzEyMTk5YTg1OWIiLCJpYXQiOjE2MTkxOTg0NDAuMDM2MDg4LCJuYmYiOjE2MTkxOTg0NDAuMDM2MDkxLCJleHAiOjE2NTA3MzQ0NDAuMDAxODMsInN1YiI6IjIiLCJzY29wZXMiOltdfQ.dMLGjve7RTwoFeqbSM8E5E3j_L2dnI5M91MtS7-_ISdjTq2b9YvNx5szJPNH3CkMdNlPpMo_vKm72cgZ83ioL6YMm-I9t27sW3Tj4uswXpaFC_sBMkFZEep7vgGZczI4RjGeDwh2lYhk-CFbj5_tmPGaDZkitwO3q8Lxm20KEGhqsT3yn4fCQv0oKBBlIPENWJHwzRbEQ8WK9IX6ZycV7-oVA_6eXiz4ZHwC-efRkQW606AgH9upGga2cX-bbZs40D8Gui8qyD0ViIbtkqRiEYHBrSe4YyNVj5Lbtj64cGiyuqcRusi0P9PNVvFWJEgxcnq6kZyw-cszAR5N3tfjhm2M2finWQjfiO-BozWz4fc955bAZAGlsbBBY7cdsQvnjoiySvZkZHkF5gO0PQBkV0-QM_1sregrXE4eBosN0gIBSitKJgMAGalu9VHeM924egLnUOrKw94M2W1z69wSlmk-ZGX7XKMj0oS0LYPFQdyZxiBlm4HJJzO6sE59IfpJpeoroU8HG-AttpCuQrIp2gShxpdJ_cRCjg8vK8eUmGLg__WwQto3W8NsQSA_PWdzahosHV9NNbmyZnmIMqeQO-xRH3XGx-sXPlvWMKQlDTgUbLtUbYiVOg9uUREPKiyUZXGpsdzV32usxm2FpAXGOA5qbZmuUFxTt63PM2lODDs";
+            axios.get("/api/ofertas/listarOfertas", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(res => {
                 //
                 this.listarOfertazos = res.data;
+                $('#tablaOferta').DataTable().destroy();
+                this.tablaOferta();
+                datatable.rows.add(res.data);
+                datatable.draw();
+                /**ACÁ HACEMOS QUE FUNCIONE CORRECTAMENTE CON LOS BOTONES QUE TIENE
+                swal({
+                    title: "Bienvenido a todas tus ofertas!",
+                    button: "Muchas Gracias",
+                    icon: "warning",
+                });*/
+            })              
+            .catch(error=>{
+                let errorObject=JSON.parse(JSON.stringify(error));
+            })
+        },
+        listarEstadoOferta(){
+            /**Enviar por axios.*/
+            //this.api_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMmFhODQ5ODc5MThhNDQ4YWQxZjAzZTBiMmMzNTA5NGY5OTM4MDA4NWM3ZTExM2Q4Y2FhY2U2NDVkNGQ1YzA4MDI1MWVkNzEyMTk5YTg1OWIiLCJpYXQiOjE2MTkxOTg0NDAuMDM2MDg4LCJuYmYiOjE2MTkxOTg0NDAuMDM2MDkxLCJleHAiOjE2NTA3MzQ0NDAuMDAxODMsInN1YiI6IjIiLCJzY29wZXMiOltdfQ.dMLGjve7RTwoFeqbSM8E5E3j_L2dnI5M91MtS7-_ISdjTq2b9YvNx5szJPNH3CkMdNlPpMo_vKm72cgZ83ioL6YMm-I9t27sW3Tj4uswXpaFC_sBMkFZEep7vgGZczI4RjGeDwh2lYhk-CFbj5_tmPGaDZkitwO3q8Lxm20KEGhqsT3yn4fCQv0oKBBlIPENWJHwzRbEQ8WK9IX6ZycV7-oVA_6eXiz4ZHwC-efRkQW606AgH9upGga2cX-bbZs40D8Gui8qyD0ViIbtkqRiEYHBrSe4YyNVj5Lbtj64cGiyuqcRusi0P9PNVvFWJEgxcnq6kZyw-cszAR5N3tfjhm2M2finWQjfiO-BozWz4fc955bAZAGlsbBBY7cdsQvnjoiySvZkZHkF5gO0PQBkV0-QM_1sregrXE4eBosN0gIBSitKJgMAGalu9VHeM924egLnUOrKw94M2W1z69wSlmk-ZGX7XKMj0oS0LYPFQdyZxiBlm4HJJzO6sE59IfpJpeoroU8HG-AttpCuQrIp2gShxpdJ_cRCjg8vK8eUmGLg__WwQto3W8NsQSA_PWdzahosHV9NNbmyZnmIMqeQO-xRH3XGx-sXPlvWMKQlDTgUbLtUbYiVOg9uUREPKiyUZXGpsdzV32usxm2FpAXGOA5qbZmuUFxTt63PM2lODDs";
+            axios.get("/api/ofertas/listarEstadoOfertas", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
+            .then(res => {
+                this.estado_ofertas = res.data;
                 $('#tablaOferta').DataTable().destroy();
                 this.tablaOferta();
                 datatable.rows.add(res.data);
@@ -429,20 +495,26 @@ export default {
             let fechaTermino = this.editarOferta.fecha_termino;
             
             if (fechaTermino >= fechaInic) {
-                let gu = {
-                'carrera': this.editarOferta.carrera,
-                'nombre_oferta': this.editarOferta.nombre_oferta,
-                'descripcion': this.editarOferta.descripcion,
-                'remunerada': this.editarOferta.remunerada,
-                'valor_remuneracion': this.editarOferta.valor_remuneracion,
-                'fecha_inicio': this.editarOferta.fecha_inicio,
-                'fecha_termino': this.editarOferta.fecha_termino,
-                'cupos_totales': this.editarOferta.cupos_totales,
-                'requisitos': this.editarOferta.requisitos,
+                    let gu = {
+                    'carrera': this.editarOferta.carrera,
+                    'nombre_oferta': this.editarOferta.nombre_oferta,
+                    'descripcion': this.editarOferta.descripcion,
+                    'remunerada': this.editarOferta.remunerada,
+                    'valor_remuneracion': this.editarOferta.valor_remuneracion,
+                    'fecha_inicio': this.editarOferta.fecha_inicio,
+                    'fecha_termino': this.editarOferta.fecha_termino,
+                    'cupos_totales': this.editarOferta.cupos_totales,
+                    'requisitos': this.editarOferta.requisitos,
                 }
                 /**Enviar por axios.*/
-                axios.post("/admin/empresa/registrarOfer",gu)
-                .then(res => {           
+                axios.post("/api/empresas/registrarOfer",gu, {headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${this.api_token}`
+                    }
+                    })
+                .then(res => {
+                    console.log(res); 
                     /*Todo funcionando correctamente.*/
                     if (res.data.status == 'Muy bien!') {
                         /*SweetAlert2.*/
@@ -508,7 +580,7 @@ export default {
         },
         //
         abrirModalEditar(agregar){
-            this.editarOferta = {carrera: agregar.carrera, id: agregar.id, nombre_oferta: agregar.nombre_oferta,descripcion: agregar.descripcion,
+            this.editarOferta = {estado_oferta_id: agregar.estado_oferta_id, carrera: agregar.carrera, id: agregar.id, nombre_oferta: agregar.nombre_oferta,descripcion: agregar.descripcion,
                                 remunerada: agregar.remunerada,valor_remuneracion: agregar.valor_remuneracion,
                                 cupos_totales: agregar.cupos_totales, requisitos: agregar.requisitos_min ,fecha_inicio:agregar.fecha_inicio, fecha_termino: agregar.fecha_termino};
             this.titulo = 'Editar Oferta';
@@ -526,7 +598,12 @@ export default {
             });
         },
         editar(){
-            axios.put('/admin/empresa/editar_oferta/'+this.id, this.editarOferta)
+            axios.put('/api/empresas/editar_oferta/'+this.id, this.editarOferta, {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            })
             .then(resp => {
                 Swal.fire({
                     title: "Listo!",
@@ -536,8 +613,8 @@ export default {
                 });
                 $('#tablaOferta').DataTable().destroy();
                 this.listarOfertas();
-            }).catch(error=>{
-                let errorObject=JSON.parse(JSON.stringify(error));
+                }).catch(error=>{
+                    let errorObject=JSON.parse(JSON.stringify(error));
             })
         },
         //Método funcionando correctamente.
@@ -552,7 +629,12 @@ export default {
             })
             .then((willDelete) => {
                 if (willDelete) {
-                    axios.delete('/admin/api/oferta/eliminar_oferta/' + datos.id)
+                    axios.delete('/api/ofertas/eliminar_oferta/' + datos.id, {headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${this.api_token}`
+                    }
+                    })
                     .then(resp => {
                         Swal.fire({
                         title: "Listo!",
@@ -571,7 +653,11 @@ export default {
         //Este método es para enviar la fecha de postulación al practicante.
         /*Funcionando correctamente.*/
         postulacion(){
+            
+            var api_token = this.api_token;           
             $(document).on('click', ".btnPostulacion", function (){
+                console.log(api_token);
+                debugger;
                 var fila;
                 var id_practicante;
                 var email_practicante;
@@ -606,16 +692,19 @@ export default {
                     'fechaCitacion': fechaCitacion,
                     'horaCitacion': horaCitacion
                 }
-                console.log(val);
-                debugger;
-                axios.post('/admin/empresa/enviarPostulacionPracticante',val)
+        
+                axios.post('/api/empresas/enviarPostulacionPracticante',val, {headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${api_token}`
+                    }
+                    })
                     .then(resp => {
                        console.log(resp);
                     }).catch(error=>{
                             let errorObject=JSON.parse(JSON.stringify(error));
                     })
             });
-            //--------------------------------------
         },
     }
 }

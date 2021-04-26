@@ -12,11 +12,17 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
+    //Sin modificar.
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+    //Modificado.
+    /*'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],*/
+
 
     /*
     |--------------------------------------------------------------------------
@@ -41,11 +47,23 @@ return [
             'provider' => 'users',
         ],
 
-        'api' => [
+        /*'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
+        ],*/
+        //Este es con el cambio de passport.
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            //'hash' => false,
         ],
+        //Este es el cambio de tymon jwt.
+        /*'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            //'hash' => false,
+        ],*/
     ],
 
     /*

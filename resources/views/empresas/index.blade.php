@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.empresa')
 
 @section('title')
     Empresitas
@@ -10,17 +10,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap4.min.css">
 @endsection
 
-@section('content-admin')
+@section('content-empresa')
 <center>
     <h1 class="mt-3">Registra tu Oferta</h1>
     <br>
 </center>
 <div class="container">
-    @if (auth()->user()->can('empresas.index'))  
-        <div id="registrarOfertaEmpresa">
-            <ofertaemp-component></ofertaemp-component>
-        </div>
-    @endif
+    <div id="registrarOfertaEmpresa">
+        <ofertaemp-component></ofertaemp-component>
+    </div>
 </div>
 @endsection
 

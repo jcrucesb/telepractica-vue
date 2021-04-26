@@ -34,6 +34,7 @@ export default {
     return {
         listarOferta: [],
         valor:null,
+        api_token: localStorage.getItem('respuesta'),
     };
   },
     mounted(){
@@ -41,8 +42,12 @@ export default {
     },
     methods: {
         obtenerOferta(){
-            axios.get("/admin/api/oferta/listarOfertaPracticante")
-            .then(response => {
+            axios.get("/api/ofertas/listarOfertaPracticante", {headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.api_token}`
+            }
+            }).then(response => {
                 //console.log(response);
                 this.listarOferta = response.data;
             })
@@ -64,13 +69,17 @@ export default {
                 showCancelButton: true,
                 showCloseButton: true
                 }).then((willDelete) => {
-                    console.log(willDelete);
-                    debugger;
+                    //console.log(willDelete);
+                    //debugger;
                     //console.log(willDelete.isDismissed == true);
                     //debugger;
                 if (willDelete.isConfirmed == true) {
-                    axios.post('/store', a)
-                    .then(resp => {
+                    axios.post('/api/ofertas/store', a, {headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.api_token}`
+                    }
+                }).then(resp => {
                         if(resp.data.msg == '1'){
                             Swal.fire({
                                 title: "Ya postulaste a esta Oferta!",

@@ -40,7 +40,7 @@ class OfertaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    /*public function store(Request $request)
     {
         //dd($request);
         $id_session = auth()->id();
@@ -72,7 +72,7 @@ class OfertaController extends Controller
                 foreach ($_datos as $ke) {
                     Postulacion::create([
                         /*Acá insertamos correctamente el id de la empresa en la tabla Oferta.*/
-                        /*Funcionando correctamente.*/
+                        /*Funcionando correctamente.
                         'oferta_id' => $request->id_oferta,
                         'practicante_id' => $key->id,
                         'estado_post_id' => $ke->estado_oferta_id,
@@ -84,7 +84,7 @@ class OfertaController extends Controller
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Display the specified resource.
@@ -153,7 +153,7 @@ class OfertaController extends Controller
             'ofertas' => $ofertas
         ], 200);
     }
-    /*Obtener todas las OFERTAS para listarlas desde la vista welcome.*/
+    /*Obtener todas las OFERTAS para listarlas desde la vista welcome.
     public function listOfertas(){
         $empresas = DB::table('empresas')
         ->join('ofertas','ofertas.empresa_id','=','empresas.id')
@@ -161,16 +161,16 @@ class OfertaController extends Controller
                  'ofertas.remunerada', 'ofertas.fecha_inicio','ofertas.cupos_totales',
                  'ofertas.fecha_termino', 'ofertas.valor_remuneracion', 'ofertas.requisitos_min')
         ->get();
-        return $empresas;
-    }
+        return response()->json($empresas, 200);
+    }*/
 
 
     /*Obtener todas las OFERTAS para listarlas desde el DATATABLE del
     DASHBOARD, de empresa cuando se crea una oferta.*/
-    public function listarOfertas(){
+    /*public function listarOfertas(){
         $emp = auth()->id();
         //echo $emp;
-        /**Obtener la empresa que hizo la oferta.*/
+        /**Obtener la empresa que hizo la oferta.
         $oferta =  DB::table('empresas')
             ->select('user_id', 'id')
             ->where('user_id', '=', $emp)
@@ -178,21 +178,30 @@ class OfertaController extends Controller
 
             foreach ($oferta as $key) {
                 $empresas = DB::table('ofertas')
-                    ->select('id', 'nombre_oferta', 'descripcion', 'remunerada',
-                                'valor_remuneracion', 'cupos_totales', 'fecha_inicio', 'fecha_termino',
-                                'requisitos_min','created_at')
+                ->join('estado_ofertas', 'ofertas.estado_oferta_id', '=', 'estado_ofertas.id')
+                    ->select('estado_ofertas.nombre','ofertas.id', 'ofertas.nombre_oferta', 'ofertas.descripcion', 'ofertas.remunerada',
+                             'ofertas.valor_remuneracion', 'ofertas.cupos_totales', 'ofertas.fecha_inicio', 'ofertas.fecha_termino',
+                             'ofertas.requisitos_min','ofertas.created_at')
                     ->where('empresa_id', '=' , $key->id)
                     ->get();
-                return $empresas;
+                return response()->json($empresas, 200);
             }
         
-    }
+    }*/
     /**Método paRA ELIMINAR una OFERTA.*/
-    public function eliminar_oferta(Oferta $idOferta){
+    /*public function eliminar_oferta(Oferta $idOferta){
         $idOferta->delete();
-    }
+    }*/
+    /*Listar el estado de las ofertas para EDITAR desde el DASHBOARD DE LAS empresas, Jair.*/
+    /*public function listarEstadoOfertas(){
+        $li = DB::table('estado_ofertas')
+                ->select('id', 'nombre')
+                ->get();
+        return $li;
+
+    }*/
     /*Listar Ofertas para el DASHBOARD de los practicantes por carrera.*/
-    public function listarOfertaPracticante(){
+    /*public function listarOfertaPracticante(){
         $id_prac = auth()->user()->email;
         
         $li = DB::table('practicantes')
@@ -211,5 +220,5 @@ class OfertaController extends Controller
                 ->get();
             return $list;
         }
-    }
+    }*/
 }

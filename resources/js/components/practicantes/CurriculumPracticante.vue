@@ -69,6 +69,7 @@ export default {
             btnCrear: false,
             btnEditar:false,
             titulo:null,
+            api_token: localStorage.getItem('respuesta'),
             fields: {
                 img:null,
                 id: null,
@@ -107,7 +108,12 @@ export default {
             });
         },
         obtenerCertificados(){
-            axios.get("/api/practicante/curriculumPracticantes")
+            axios.get("/api/practicantes/curriculumPracticantes",{headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.api_token}`
+                }
+            })
             .then(response => {
                 this.listarCertificados = response.data;
                 this.listarCertificados.length;
@@ -153,7 +159,12 @@ export default {
                 fields.append(key, this.fields[key])
             }
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/admin/practicante/editarCurriculum', fields,{
+            axios.post('/api/practicantes/editarCurriculum', fields,{headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.api_token}`
+                }
+            },{
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }   
@@ -182,7 +193,12 @@ export default {
                 fields.append(key, this.fields[key])
             }
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/admin/practicante/crearCurriculum', fields,{
+            axios.post('/api/practicantes/crearCurriculum', fields,{headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.api_token}`
+                }
+            },{
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }   
@@ -217,7 +233,12 @@ export default {
             })
             .then((willDelete) => {
                 if (willDelete.isConfirmed == true) {
-                    axios.delete('/admin/practicante/eliminar_curriculum/' + id)
+                    axios.delete('/api/practicantes/eliminar_curriculum/' + id,{headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.api_token}`
+                }
+            })
                     .then(resp => {
                         Swal.fire({
                             title: "Listo!",

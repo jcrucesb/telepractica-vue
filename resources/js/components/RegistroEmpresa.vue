@@ -224,6 +224,7 @@ export default {
         telefono:null,
         direccion:null,
         password:null,
+        rol_id: 2,
       }),
     };
   },
@@ -234,7 +235,7 @@ export default {
         //Funcionando correctamente por Jair.
         registrarEmpresa(){
             this.form
-            .post("regitEmpresa")
+            .post("api/empresas/regitEmpresa")
             .then((resp) => {
                 if (resp.data.status == '1') {
                     Swal.fire({

@@ -41,7 +41,7 @@
                     <div class="col">
                         <div class="form-group">
                         <label>Región</label>
-                            <select name="" id="" v-model="form.region">
+                            <select name="" id="" v-model="form.region" @change="regiones(form.region)">
                                 <option v-for="opcion in region" :value="opcion.id" :key="opcion.id">
                                     {{ opcion.nombre }}
                                 </option>
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group">
+                        <div class="form-group mostrarComuna">
                             <label>Comuna</label>
                                 <select name="" id="" v-model="form.comuna">
                                     <option v-for="opcion in comuna" :value="opcion.id" :key="opcion.id">
@@ -322,6 +322,7 @@ export default {
         region:[],
         educacion:[],
         practica:[],
+        comun:null,
         id:null,
         nombre_completo:null,
         rut: null,
@@ -356,17 +357,19 @@ export default {
   },
     mounted(){
         this.obtenerRegion();
-        this.obtenerComuna();
+        //this.obtenerComuna();
         this.obtenerInstitucion();
         this.educacional();
         this.tipoPractica();
         this.habilidadBlandas();
         this.habilidadesProf();
+        //this.regiones();
     },
     methods: {
         //Funcionando correctamente.
         obtenerRegion(){
-            axios.get("listarRegion")
+            $('.mostrarComuna').hide();
+            axios.get("/api/regiones/listarRegion")
             .then(response => {
                 console.log(this.region = response.data);
             })
@@ -375,10 +378,25 @@ export default {
             })
         },
         //Funcionando correctamente.
-        obtenerComuna(){
-            axios.get("listarComunas")
+        /*Carreras(){
+            axios.get("/api/ofertas/listarCarrerasFormPracticante")
             .then(response => {
                 console.log(this.comuna = response.data);
+                
+            })
+            .catch(error=>{
+                let errorObject=JSON.parse(JSON.stringify(error));
+            })
+        },*/
+        regiones(h){
+            let id = {
+                'id_region' : h,
+            }
+            this.comun = h;
+            axios.post("api/comunas/listarComunas", id)
+            .then(response => {
+                this.comuna = response.data;
+                $('.mostrarComuna').show();
             })
             .catch(error=>{
                 let errorObject=JSON.parse(JSON.stringify(error));
@@ -386,7 +404,7 @@ export default {
         },
         //Funcionando correctamente.
         obtenerInstitucion(){
-            axios.get("insti")
+            axios.get("/api/instituciones/insti")
             .then(response => {
                 console.log(this.instituciones = response.data);
             })
@@ -463,6 +481,7 @@ export default {
         registrarPracticante(){
             var formDa = new FormData();
             formDa.append('cantidadHora',this.form.cantidadHora);
+            //formDa.append('comuna_id',this.form.comun);
             formDa.append('cantidadMeses',this.form.cantidadMeses);
             formDa.append('certificacion',this.form.certificacion);
             formDa.append('comuna',this.form.comuna);
@@ -488,7 +507,7 @@ export default {
             
             /*Es necesaria para los files.*/
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-            axios.post('/formPrac', formDa,{
+            axios.post('/api/practicantes/formPrac', formDa,{
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -501,7 +520,7 @@ export default {
                         text: "Recuerda, estos campos pueden ser editados desde tu DASHBOARD",
                         icon: "success",
                     });
-                    location.href = "http://telepractica-vue.test:8080/login";
+                    //location.href = "http://telepractica-vue.test:8080/login";
                  }else if (response.data.status == '2') {
                     Swal.fire({
                         title:'El email o el rut son incorrectos',

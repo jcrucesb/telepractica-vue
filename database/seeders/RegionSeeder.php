@@ -15,14 +15,18 @@ class RegionSeeder extends Seeder
     public function run()
     {
         Region::truncate();
-
-        for ($i=1; $i<=16; $i++)
-        {
-            $region = new Region();
-
-            $region->nombre = "Región $i";
-
-            $region->save();
+        $region = array('Arica y Parinacota', 'Tarapacá','Antofagasta','Atacama','Coquimbo', 'Valparaíso'
+                        ,'Región del Libertador Gral. Bernardo O’Higgins','Región del Maule', 'Región del Biobío',
+                        'Región de la Araucanía', 'Región de Los Ríos','Región de Los Lagos',
+                        'Región Aisén del Gral. Carlos Ibáñez del Campo','Región de Magallanes y de la Antártica Chilena',
+                        'Región Metropolitana de Santiago');
+        foreach ($region as $key) {
+            Region::create([
+                /*Acá insertamos correctamente el id de la empresa en la tabla Oferta.*/
+                /*Funcionando correctamente.*/
+                'nombre' => $key,
+            ]);
         }
+
     }
 }

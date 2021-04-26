@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Empresa;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -61,8 +62,20 @@ class EmpresaSeeder extends Seeder
             'name' => 'empresa',
             'email' => 'empresa@gmail.com',
             'password' => Hash::make('1234567'),
+            'rol_id' => 2,
+            'api_token' => Str::random(10),
             'estado_usuario_id' => 2,
             'run' => '11111111-1',
+        ])->assignRole('Empresa');
+
+        $emp = User::create([
+            'name' => 'la',
+            'email' => 'la@gmail.com',
+            'password' => Hash::make('123'),
+            'rol_id' => 2,
+            'api_token' => Str::random(10),
+            'estado_usuario_id' => 2,
+            'run' => '222222-2',
         ])->assignRole('Empresa');
 
         Empresa::create([
@@ -74,6 +87,20 @@ class EmpresaSeeder extends Seeder
             'razon_social' => 'Giro-EMP',
             'giro' => 'eme bus',
             'web' => 'www.emebus.cl',
+            'telefono' => '+56 9 0000 0000',
+            'direccion' => 'Talca',
+            'fecha_inicio_actividades' => '01/01/2021',
+        ]);
+
+        Empresa::create([
+            'user_id' => $emp->id,
+            'area_id' => 1,
+            'nombre_ficticio' => 'la',
+            'run' => '222222-2',
+            'email' => 'la@gmail.com',
+            'razon_social' => 'Giro-EMP1',
+            'giro' => 'la',
+            'web' => 'www.la.cl',
             'telefono' => '+56 9 0000 0000',
             'direccion' => 'Talca',
             'fecha_inicio_actividades' => '01/01/2021',
