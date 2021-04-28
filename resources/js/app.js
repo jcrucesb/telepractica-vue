@@ -101,12 +101,22 @@ Vue.component('curriculumpracticante-component', require('./components/practican
 
 /*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
 Vue.component('editarregistropracticante-component', require('./components/practicantes/EditarRegistroPracticante.vue').default);
-userLogin
+
+/*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
+Vue.component('misofertas-component', require('./components/practicantes/MisOfertas.vue').default);
+
+/*Este es el DATATABLES para listar los CERTIFICADOS del PRACTICANTE, Jair*/
+Vue.component('seleccionado-component', require('./components/practicantes/OfertaSeleccionado.vue').default);
+
 // MomentsJS
 var moment = require('moment');
 
 Vue.filter("date", function (created) {
   return moment(created).format('YYYY-MM-DD HH:mm:ss');
+});
+
+Vue.filter("fecha", function (created) {
+  return moment(created).format('DD-MM-YYYY');
 });
 
 // SweetAlert2
@@ -204,4 +214,14 @@ const curriculumPracticante = new Vue({
 /**Jair, Certificado Practicante.*/
 const editarRegistroPracticante = new Vue({
   el: '#editarRegistroPracticante',
+});
+
+/**Jair, Listar las POSTULACIONES del PRACTICANTE.*/
+const ofertaSeleccionado = new Vue({
+  el: '#ofertaSeleccionado',
+});
+
+/**Jair, Listar las POSTULACIONES del PRACTICANTE.*/
+const misPostulaciones = new Vue({
+  el: '#misPostulaciones',
 });

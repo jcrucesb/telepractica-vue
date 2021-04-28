@@ -149,7 +149,7 @@ class ApiPracticanteController extends Controller
                        'internet_fijo' => $request->internetFijo,
                        'hab_blandas' => json_encode($e),
                        'hab_profesionals' => json_encode($cv),
-                       //'experiencia' => $request->experiencia,
+                       'experiencia' => $request->experiencia,
                     ));
                 //$prac->save();
             /*Obtendremos el id del usuario que esta completando su registro.*/
@@ -472,6 +472,84 @@ class ApiPracticanteController extends Controller
                 'status' => '1',
                 'msg' => 'error',
             ]);
+        }
+    }
+    /** */
+    public function obtenerPostulaciones(){
+        $id = auth()->id();
+        
+        $prac = DB::table('practicantes')
+        ->select('id', 'nombre_completo', 'user_id')
+        ->where('user_id' ,'=', $id)
+        ->get();
+        foreach ($prac as $key) {
+            $obtener = DB::table('entrevistas')
+                    ->join('postulacions', 'entrevistas.postulacion_id', '=', 'postulacions.id')
+                    ->join('ofertas','postulacions.oferta_id', 'ofertas.id')
+                    ->join('empresas', 'ofertas.empresa_id', '=', 'empresas.id')
+                    ->select('postulacions.id','empresas.nombre_ficticio', 'postulacions.nombre', 'postulacions.practicante_id','entrevistas.seleccionado')
+                    ->where('postulacions.practicante_id' ,'=', $key->id)
+                    ->get();
+                    //echo $obtener;
+            return response()->json($obtener, 200);
+        }
+    }
+    /*Método para recibir la CONFIRMACIÓN del PRACTICANTE a su fecha de citación desde el EMAIL.*/
+    public function confirmacionPracticante(Request $request){
+        //dd($request);
+        $id_prac = DB::table('practicantes')
+                    ->join('postulacions', 'practicantes.id', '=', 'postulacions.practicante_id')
+                    ->join('entrevistas', 'postulacions.id', '=', 'entrevistas.postulacion_id')
+                    ->select('entrevistas.id as entrevista_id','entrevistas.postulacion_id','practicantes.id', 'practicantes.run', 'practicantes.nombre_completo', 'practicantes.email')
+                    ->where('practicantes.run', '=', $request->run)
+                    ->get();
+        //echo $id_prac;           
+                if(count($id_prac) > 0){
+                    foreach($id_prac as $key){
+                        $prac = DB::table('estado_entrevistas')
+                                ->where('entrevista_id','=', $key->entrevista_id)
+                                ->update(array(
+                                   'rut_confirmacion' => $request->run,
+                                ));
+                                return response()->json([
+                                    'status' => '1',
+                                    'msg' => 'run correcto'
+                                ]);
+                    }
+                }else{
+                    return response()->json([
+                        'status' => '2',
+                        'msg' => 'Error en eL rut'
+                    ]);
+                }
+    }
+    public function misPostulaciones(){
+        $id = auth()->id();
+        //echo $id;
+        $id_prac = DB::table('practicantes')
+                    ->select('id')
+                    ->where('user_id', '=', $id)
+                    ->get();
+        //echo $id_prac;
+        foreach ($id_prac as $key) {
+            //echo $key->id;
+            /*$ids = DB::table('postulacions')
+                    ->join('ofertas', 'postulacions.oferta_id', '=', 'ofertas.id')
+                    ->join('empresas', 'ofertas.empresa_id', '=', 'empresas.id')
+                    ->select('ofertas.id','ofertas.nombre_oferta','postulacions.practicante_id',
+                             'empresas.nombre_ficticio')
+                    ->where('postulacions.practicante_id', '=', $key->id)
+                    ->get();
+            echo count($ids);*/
+            $ids = DB::table('empresas')
+                    ->join('ofertas', 'empresas.id', '=', 'ofertas.empresa_id')
+                    ->join('postulacions', 'ofertas.id', '=', 'postulacions.oferta_id')
+                    ->join('practicantes', 'postulacions.practicante_id', '=', 'practicantes.id')
+                    ->select('practicantes.id','ofertas.id','ofertas.nombre_oferta','postulacions.practicante_id',
+                             'empresas.nombre_ficticio')
+                    ->where('practicantes.id', '=', $key->id)
+                    ->get();
+            return response()->json($ids, 200);
         }
     }
 }

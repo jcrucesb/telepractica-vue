@@ -68,16 +68,6 @@ class EmpresaSeeder extends Seeder
             'run' => '11111111-1',
         ])->assignRole('Empresa');
 
-        $emp = User::create([
-            'name' => 'la',
-            'email' => 'la@gmail.com',
-            'password' => Hash::make('123'),
-            'rol_id' => 2,
-            'api_token' => Str::random(10),
-            'estado_usuario_id' => 2,
-            'run' => '222222-2',
-        ])->assignRole('Empresa');
-
         Empresa::create([
             'user_id' => $emp->id,
             'area_id' => 1,
@@ -91,6 +81,16 @@ class EmpresaSeeder extends Seeder
             'direccion' => 'Talca',
             'fecha_inicio_actividades' => '01/01/2021',
         ]);
+
+        $emp = User::create([
+            'name' => 'la',
+            'email' => 'la@gmail.com',
+            'password' => Hash::make('123'),
+            'rol_id' => 2,
+            'api_token' => Str::random(10),
+            'estado_usuario_id' => 2,
+            'run' => '222222-2',
+        ])->assignRole('Empresa');
 
         Empresa::create([
             'user_id' => $emp->id,

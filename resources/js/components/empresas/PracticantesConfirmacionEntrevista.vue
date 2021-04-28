@@ -10,7 +10,10 @@
                 <th scope="col" class="text-center">Nombre Completo</th>
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Nombre Oferta</th>
-                <th scope="col" class="text-center" data-priority="1">Acción</th>
+                <th scope="col" class="text-center">Correo Enviado</th>
+                <th scope="col" class="text-center">Día de la Citación</th>
+                <th scope="col" class="text-center">Hora de la Citación</th>
+                <th scope="col" class="text-center" data-priority="1">Seleccionar</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +23,13 @@
                 <td class="text-white text-center">{{prac.nombre_completo}}</td>
                 <td class="text-white text-center">{{prac.email}}</td>
                 <td class="text-white text-center">{{prac.nombre}}</td>
+                <td class="text-white text-center">{{prac.correo_enviado}}</td>
+                <td class="text-white text-center">{{prac.fecha_citacion | fecha}}</td>
+                <td class="text-white text-center">{{prac.hora_citacion}}</td>
                 <td class="text-dark text-center">
-                    <button  type="button" @click.prevent="eliminar();" class="btn btn-danger btnPostulacion">Eliminar</button>
+                   <button type="button" class="btn" @click="seleccionar(prac.id,prac.nombre_completo,prac.run,prac.nombre)">
+                        <img :src="'../img/email.png'" alt="">
+                    </button>
                 </td>
             </tr>
         </tbody>
@@ -65,6 +73,9 @@ export default {
                         { width: "17%" },
                         { width: "10%" },
                         { width: "10%" },
+                        { width: "3%" },
+                        { width: "3%" },
+                        { width: "13%" },
                         { width: "13%" },
                         { width: "13%" },
                     ],  
@@ -82,6 +93,48 @@ export default {
                 this.practicante = response.data;
                 this.tablaOferta();
             });
+        },
+        seleccionar(id, nombrePract,runPract,nombreOferta){
+            let datosPrac = {
+                'id_prac': id,
+                'nombrePract': nombrePract,
+                'runPract': runPract,
+                'nombreOferta': nombreOferta,
+            }
+            Swal.fire({
+                title: '¿ Seleccionar al Practicante ' + nombrePract +'?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, seleccionar!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.post('/api/empresas/practicanteSeleccionado', datosPrac,{headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${this.api_token}`
+                    }
+                    }).then(resp => {
+                        if (resp.data.status == 1) {
+                            Swal.fire(
+                                'Seleccionado!',
+                                'Se ha enviado un correo al Practicante',
+                                'success'
+                            )
+                        }else if (resp.data.status == 1) {
+                            Swal.fire(
+                                'Error!',
+                                'No se pudo enviar el correo',
+                                'error'
+                            )
+                        }
+                    }).catch(error=>{
+                            let errorObject=JSON.parse(JSON.stringify(error));
+                    })
+                    
+                }
+            })
         },
     }
 }

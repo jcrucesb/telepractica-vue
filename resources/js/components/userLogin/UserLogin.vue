@@ -48,6 +48,8 @@
     </div>
 </template>
 <script>
+import Swal from 'sweetalert2';
+
 export default {
      data() {
         return {
@@ -62,7 +64,6 @@ export default {
         };
     },
     mounted(){
-     usuario()
     },
     methods: {
         login(){
@@ -85,6 +86,11 @@ export default {
                 }else if (res.data.rol_id == 1) {
                     console.log(localStorage.setItem('respuesta', res.data.access_token));
                     location.href ="http://telepractica-vue.test:8080/practicantes/index";
+                }else if (res.data.status == '0') {
+                    Swal.fire({
+                        title: "Error, Usuario o Contraseña Incorrectas!",
+                        icon: "warning",
+                    });
                 }
             })              
             .catch(error=>{

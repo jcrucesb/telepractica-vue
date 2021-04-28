@@ -57,6 +57,8 @@ Route::post('/practicantes/crearCurso', [ApiPracticanteController::class, 'crear
 Route::post('/practicantes/editarCertificado', [ApiPracticanteController::class, 'editarCertificado'])->middleware('auth:api');
 //Ruta para ELIMINAR el curso con el CERTIFICADO del PRACTICANTE desde el DASHBOARD, Jair.
 Route::delete('/practicantes/eliminar_curso/{id}', [ApiPracticanteController::class, 'eliminar_curso'])->middleware('auth:api');
+//Ruta para listar las POSTULACIONES del PRACTICANTE desde el DASHBOARD, Jair.
+Route::get('/practicantes/obtenerPostulaciones', [ApiPracticanteController::class, 'obtenerPostulaciones'])->middleware('auth:api');
 
 //******** Ruta de solo las EMPRESAS *********//
 //Esta ruta es para Registrar las EMPRESAS desde la vista welcome, por Jair.
@@ -74,9 +76,16 @@ Route::get('/empresas/datEmp', [ApiEmpresaController::class, 'datEmp'])->middlew
 /*EDITAR datos desde el DASHBOARD de la EMPRESA.*/
 Route::put('/empresas/editarDatosEmp/{id}', [ApiEmpresaController::class, 'editarDatosEmp'])->middleware('auth:api');
 
+/*Esta ruta es para registrar las OFERTAS por parte de las EMPRESAS, Jair.*/
+Route::post('/empresas/practicanteSeleccionado', [ApiEmpresaController::class, 'practicanteSeleccionado'])->middleware('auth:api');
+
 /******************** PRACTICANTES *******************************************************/
 //Esta ruta es para la CONFIRMACIÓN por parte del PRACTICANTE a la fecha de citación dada por la EMPRESA, por Jair.
-Route::post('/practicantes/confirmacionPracticante', [ApiEmpresaController::class, 'confirmacionPracticante']);
+Route::post('/practicantes/confirmacionPracticante', [ApiPracticanteController::class, 'confirmacionPracticante']);
+
+//Esta ruta es para la CONFIRMACIÓN por parte del PRACTICANTE a la fecha de citación dada por la EMPRESA, por Jair.
+Route::get('/practicantes/misPostulaciones', [ApiPracticanteController::class, 'misPostulaciones'])->middleware('auth:api');
+
 
 //Esta ruta es para la CONFIRMACIÓN por parte del PRACTICANTE a la fecha de citación dada por la EMPRESA, por Jair.
 //Route::post('/practicantes/registrarWelcomePrac', [ApiPracticanteController::class, 'registrarWelcomePrac']);

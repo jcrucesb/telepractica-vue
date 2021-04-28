@@ -18,6 +18,7 @@ use App\Models\EstadoEntrevista;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Mail\PracticanteSeleccionado;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -318,41 +319,22 @@ class ApiEmpresaController extends Controller
                     $id_entrevista = EstadoEntrevista::create([
                         'entrevista_id' => $id_entrevista->id,
                     ]);
-            }
-        }
-    }
-    /*Método para recibir la CONFIRMACIÓN del PRACTICANTE a su fecha de citación desde el EMAIL.*/
-    public function confirmacionPracticante(Request $request){
-        //dd($request);
-        $id_prac = DB::table('practicantes')
-                    ->join('postulacions', 'practicantes.id', '=', 'postulacions.practicante_id')
-                    ->join('entrevistas', 'postulacions.id', '=', 'entrevistas.postulacion_id')
-                    ->select('entrevistas.id as entrevista_id','entrevistas.postulacion_id','practicantes.id', 'practicantes.run', 'practicantes.nombre_completo', 'practicantes.email')
-                    ->where('practicantes.run', '=', $request->run)
-                    ->get();
-        echo $id_prac;           
-                if(count($id_prac) > 0){
-                    foreach($id_prac as $key){
-                        $prac = DB::table('estado_entrevistas')
-                                ->where('entrevista_id','=', $key->entrevista_id)
-                                ->update(array(
-                                   'rut_confirmacion' => $request->run,
-                                ));
-                                return response()->json([
-                                    'msg' => '0'
-                                ]);
-                    }
-                }else{
                     return response()->json([
-                        'msg' => '1'
+                        'status' => '1',
+                        'message' => 'Correo enviado Correctamente'
                     ]);
-                }
-    }
+            }
+        }else{
+            return response()->json([
+                'status' => '0',
+                'message' => 'Error, no se pudo enviar el correo'
+            ]);
+        }
 
+    }
     /*Método para obtener a los PRACTICANTES que confirmaron la fecha de entrevista.*/
     public function practicantesConfirmaron(Request $request){
         $id = Auth::user()->id;
-        //echo $id;
         $run_prac = DB::table('estado_entrevistas')
                     ->select('rut_confirmacion')
                     ->get();
@@ -363,7 +345,7 @@ class ApiEmpresaController extends Controller
                 ->join('postulacions','entrevistas.postulacion_id', '=', 'postulacions.id')
                 ->join('ofertas','postulacions.oferta_id', '=', 'ofertas.id')
                 ->join('practicantes','postulacions.practicante_id', '=', 'practicantes.id')
-                ->select('practicantes.id','practicantes.run', 'practicantes.nombre_completo', 
+                ->select('entrevistas.hora_citacion','entrevistas.fecha_citacion','practicantes.id','practicantes.run', 'entrevistas.correo_enviado','practicantes.nombre_completo', 
                          'postulacions.nombre','practicantes.email')
                 ->where('ofertas.empresa_id', '=', $id)
                 ->get();
@@ -403,6 +385,55 @@ class ApiEmpresaController extends Controller
             return response()->json([
                 'msg' => '0'
             ]);
+        }
+    }
+    /* Método para enviar correo al PRACTICANTE por la EMPRESA, que ha sido seleccionado
+    para la oferta que ha postulado.*/
+    public function practicanteSeleccionado(Request $request){
+        //dd($request);
+        $prac = DB::table('postulacions')
+        ->select('id','practicante_id', 'nombre', 'oferta_id')
+        ->where('practicante_id', '=', $request->id_prac)
+        ->where('nombre', '=', $request->nombreOferta)
+        ->get();
+        //echo $prac;
+        foreach ($prac as $key) {
+            $prac = DB::table('entrevistas')
+                    ->where('postulacion_id','=', $key->id)
+                    ->update(array(
+                        'seleccionado' => 'Si',
+                        'correo_enviado' => 'Si',
+                    ));       
+            if ($prac > 0) {
+                $prac = DB::table('empresas')
+                        ->join('ofertas', 'empresas.id', '=','ofertas.empresa_id')
+                        ->join('postulacions', 'ofertas.id', '=', 'postulacions.oferta_id')
+                        ->join('practicantes', 'postulacions.practicante_id', '=', 'practicantes.id')
+                        ->select('practicantes.email','ofertas.nombre_oferta', 'empresas.nombre_ficticio')
+                        ->where('ofertas.nombre_oferta', '=', $request->nombreOferta)
+                        ->where('practicantes.nombre_completo', '=', $request->nombrePract)    
+                        ->get();
+                //echo $prac;        
+                foreach ($prac as $key) {      
+                    $details = [
+                        //Titulo del Email
+                        'nombrePract' => $request->nombrePract,
+                        'nombreOferta' => $request->nombreOferta,
+                        'nombre_ficticio' => $key->nombre_ficticio,
+                        //'nombre_ficticio' => 
+                    ];
+                    Mail::to($key->email)->send(new PracticanteSeleccionado($details));
+                }
+                return response()->json([
+                    'status' => 1,
+                    'message' => 'Practicante Notificado Correctamente'
+                ] ,200);
+            }else{
+                return response()->json([
+                    'status' => 1,
+                    'message' => 'Error'
+                ] ,404);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Entrevista extends Model
 {
     use HasFactory;
-
+    
     protected $fillable = [
         'id',
         'postulacion_id',
@@ -17,7 +17,12 @@ class Entrevista extends Model
         'evaluacion',
         'seleccionado',
         'fecha_citacion',
-        'hora_citacion'
+        'hora_citacion',
+        'correo_enviado',
+    ];
+
+    protected $casts = [
+        'fecha_citacion' => 'date:d-m-Y',
     ];
     // BelongsTo
     public function postulacion(){

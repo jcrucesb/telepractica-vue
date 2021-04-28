@@ -19,9 +19,10 @@ class CreateEntrevistasTable extends Migration
             $table->bigInteger('postulacion_id')->unsigned()->nullable();
            
             $table->integer('evaluacion')->nullable()->default(1);
-            $table->boolean('seleccionado')->nullable();
+            $table->string('seleccionado')->nullable();
             $table->date('fecha_citacion')->nullable();
             $table->time('hora_citacion')->nullable();
+            $table->string('correo_enviado')->nullable();
             $table->timestamps();
         });
     }

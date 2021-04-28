@@ -49,6 +49,7 @@ class ApiUserController extends Controller
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
+                'status' => '0',
                 'message' => 'Credenciales Incorrectas', 401
             ]);
         }

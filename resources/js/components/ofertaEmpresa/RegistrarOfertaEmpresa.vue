@@ -274,9 +274,6 @@ export default {
         this.listarEstadoOferta();
     },
     methods:{
-        usuario(){
-            
-        },
         //
         tabla(){
             //this.login();
@@ -628,7 +625,7 @@ export default {
                 dangerMode: true,
             })
             .then((willDelete) => {
-                if (willDelete) {
+                if (willDelete) { 
                     axios.delete('/api/ofertas/eliminar_oferta/' + datos.id, {headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
@@ -653,11 +650,9 @@ export default {
         //Este método es para enviar la fecha de postulación al practicante.
         /*Funcionando correctamente.*/
         postulacion(){
-            
             var api_token = this.api_token;           
             $(document).on('click', ".btnPostulacion", function (){
                 console.log(api_token);
-                debugger;
                 var fila;
                 var id_practicante;
                 var email_practicante;
@@ -700,7 +695,19 @@ export default {
                     }
                     })
                     .then(resp => {
-                       console.log(resp);
+                       if (resp.data.status == '1') {
+                           Swal.fire({
+                                title: "Citación Enviada Correctamente!",
+                                icon: "success",
+                                button: "OK",
+                            });
+                       }else if (resp.data.status == '2') {
+                           Swal.fire({
+                                title: "No se pudo enviar la Citación!",
+                                icon: "error",
+                                button: "OK",
+                            });
+                       }
                     }).catch(error=>{
                             let errorObject=JSON.parse(JSON.stringify(error));
                     })

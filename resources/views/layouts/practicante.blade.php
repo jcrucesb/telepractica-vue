@@ -146,12 +146,17 @@
                                 <!---->
                                 
                                 <li class="nav-item">
-                                    <a href="{{ route('postulacion.index') }}" class="nav-link">
+                                    <a href="{{ route('ofertaSeleccionado') }}" class="nav-link">
                                         <i class="fas fa-tasks"></i>
-                                        <p>Postulaciones</p>
+                                        <p>Seleccionado</p>
+                                    </a>
+                                </li>    
+                                <li class="nav-item">
+                                    <a href="{{ route('postulacionesPracticantes') }}" class="nav-link">
+                                        <i class="fas fa-tasks"></i>
+                                        <p>Mis Postulaciones</p>
                                     </a>
                                 </li>
-                               
                             </ul>
                         </li>
                         

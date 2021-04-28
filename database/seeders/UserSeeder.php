@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             $user->save();
         }
         */
-        User::create([
+        /*User::create([
             'name' => 'mo',
             'email' => 'momo@gmail.com',
             'password' => Hash::make('12345678'),
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             'rol_id' => 5,
             'estado_usuario_id' => 2,
             'run' => '22222222-2',
-        ])->assignRole('Superusuario');
+        ])->assignRole('Superusuario');*/
         //
         //User::factory(1)->create();
     }

@@ -318,7 +318,22 @@ Route::get('/practicantes/index', function(){
     return view('practicantes.index');
   })->name('practicante.index');
 
- /*Vista para las OFERTAS del DASHBOARD EMPRESAS, Jair.*/
+/*Vista para las OFERTAS del DASHBOARD EMPRESAS, Jair.*/
  Route::get('/empresas/index', function(){
     return view('empresas.index');
   })->name('empresa.index');
+
+/*Vista para las OFERTAS del DASHBOARD EMPRESAS, Jair.*/
+Route::get('/emails/practicanteSeleccionado', function(){
+    return view('/emails/practicanteSeleccionado');
+  })->name('practicanteSeleccionado');
+
+/*Vista para las OFERTAS del DASHBOARD EMPRESAS, Jair.*/
+Route::get('/practicantes/misPostulaciones', function(){
+    return view('/practicantes/misPostulaciones');
+  })->name('postulacionesPracticantes');
+
+/*Vista para listar todas las OFERTAS que el PRACTICANTE ha postulado, Jair.*/
+Route::get('/practicantes/ofertaSeleccionado', function(){
+  return view('/practicantes/ofertaSeleccionado');
+})->name('ofertaSeleccionado');
